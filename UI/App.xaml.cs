@@ -1,17 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
+using Database;
+using Microsoft.EntityFrameworkCore;
+using Prism.Ioc;
+using UI.DependencyInjection;
 
-namespace UI
+namespace UI;
+
+public partial class App
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
+        containerRegistry.AddDatabase();
+    }
+
+    protected override Window CreateShell() => Container.Resolve<MainWindow>();
+
+    protected override void Initialize()
+    {
+        var context = ServiceLocator.GetService<ApplicationContext>();
+        context.Database.Migrate();
     }
 }
