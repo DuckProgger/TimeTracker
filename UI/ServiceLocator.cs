@@ -1,6 +1,6 @@
 ﻿using Prism.Ioc;
 
-namespace BraidsAccounting.Services;
+namespace UI;
 
 /// <summary>
 /// Класс для получения требуемых сервисов.

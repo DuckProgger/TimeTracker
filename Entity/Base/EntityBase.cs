@@ -1,4 +1,6 @@
-﻿namespace Entity.Base;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Entity.Base;
 
 public class EntityBase
 {

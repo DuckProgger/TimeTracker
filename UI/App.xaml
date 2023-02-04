@@ -3,8 +3,16 @@
                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                         xmlns:local="clr-namespace:UI"
                         xmlns:dryIoc="http://prismlibrary.com/"
-                        StartupUri="MainWindow.xaml">
-    <Application.Resources>
-         
-    </Application.Resources>
+                        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.dark.xaml" />
+        <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Amber" SecondaryColor="Cyan" />
+
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
 </dryIoc:PrismApplication>

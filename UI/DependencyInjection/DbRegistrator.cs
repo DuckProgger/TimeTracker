@@ -1,8 +1,8 @@
-﻿using BraidsAccounting.DAL.Context;
-using BraidsAccounting.DAL.Repositories;
+﻿using Database;
 using Prism.Ioc;
+using Services;
 
-namespace BraidsAccounting.Data;
+namespace UI.DependencyInjection;
 
 /// <summary>
 /// Класс для регистрации базы данных в контейнере IoC.
@@ -10,7 +10,6 @@ namespace BraidsAccounting.Data;
 internal static class DbRegistrator
 {
     public static IContainerRegistry AddDatabase(this IContainerRegistry container) => container
-        .Register<ApplicationContext>(MyServiceFactory.CreateDbContext)
-        .AddRepositories()
-        ;
+        .RegisterScoped<ApplicationContext>(ApplicationContextFactory.CreateDbContext)
+        .RegisterScoped(typeof(IRepository<>), typeof(DbRepository<>));
 }
