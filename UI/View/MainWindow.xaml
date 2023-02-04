@@ -4,10 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
+        xmlns:const="clr-namespace:UI.Infrastructure.Constants"
+        xmlns:regions="http://prismlibrary.com/"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
-        Background="Transparent">
+        regions:ViewModelLocator.AutoWireViewModel="True"
+        Title="TimeTracker" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource MaterialDesignDarkBackground}">
     <Grid>
+      <!--Содержимое окна-->
+      <ContentControl Name="Control" DockPanel.Dock="Top" regions:RegionManager.RegionName="{x:Static const:RegionNames.Main}" />
 
-    </Grid>
+</Grid>
 </Window>
