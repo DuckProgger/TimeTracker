@@ -1,13 +1,13 @@
-﻿using Prism.Events;
-using Prism.Regions;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
+using Prism.Events;
+using Prism.Regions;
 using UI.Infrastructure;
 
-namespace UI.ViewModel;
+namespace UI.ViewModels;
 
 internal abstract class ViewModelBase : INotifyPropertyChanged, INavigationAware
 {

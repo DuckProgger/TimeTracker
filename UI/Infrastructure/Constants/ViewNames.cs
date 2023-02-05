@@ -1,4 +1,4 @@
-﻿using UI.View;
+﻿using UI.Views;
 
 namespace UI.Infrastructure.Constants;
 internal static class ViewNames

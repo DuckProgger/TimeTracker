@@ -1,0 +1,39 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:infrastructure="clr-namespace:UI.Infrastructure">
+
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.listbox.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.datagrid.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.passwordbox.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.window.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+
+
+  <Style TargetType="{x:Type ListBoxItem}" x:Key="NotifierListBoxItemStyle">
+    <Style.Triggers>
+      <DataTrigger Binding="{Binding Type}" Value="{x:Static infrastructure:MessageType.Error}">
+        <Setter Property="ListBoxItem.Background" Value="#F26064"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding Type}" Value="{x:Static infrastructure:MessageType.Info}">
+        <Setter Property="ListBoxItem.Background" Value="#8CD6AD"/>
+        <Setter Property="ListBoxItem.Foreground" Value="DarkSlateGray"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding Type}" Value="{x:Static infrastructure:MessageType.Warning}">
+        <Setter Property="ListBoxItem.Background" Value="#FFFCCC"/>
+        <Setter Property="ListBoxItem.Foreground" Value="DarkSlateGray"/>
+      </DataTrigger>
+    </Style.Triggers>
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Setter Property="FontFamily" Value="Segoe UI"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Style.Resources>
+      <Style TargetType="Border">
+        <Setter Property="CornerRadius" Value="5"/>
+      </Style>
+    </Style.Resources>
+  </Style>
+
+</ResourceDictionary>

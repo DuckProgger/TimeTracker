@@ -8,6 +8,8 @@
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
 
+        <ResourceDictionary Source="Styles/Styles.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="Templates/Templates.xaml"></ResourceDictionary>
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.dark.xaml" />
         <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Amber" SecondaryColor="Cyan" />

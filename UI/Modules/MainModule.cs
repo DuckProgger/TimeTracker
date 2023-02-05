@@ -2,7 +2,7 @@
 using Prism.Modularity;
 using Prism.Regions;
 using UI.Infrastructure.Constants;
-using UI.View;
+using UI.Views;
 
 namespace UI.Modules;
 
