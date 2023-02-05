@@ -1,4 +1,6 @@
-﻿namespace UI.Model;
+﻿using Entity;
+
+namespace UI.Model;
 
 internal class WorkModel : ModelBase
 {
@@ -7,4 +9,14 @@ internal class WorkModel : ModelBase
     public string Name { get; set; }
 
     public double Time { get; set; }
+
+    public static WorkModel Map(Work work)
+    {
+        return new WorkModel
+        {
+            Id = work.Id,
+            Name = work.Name,
+            Time = work.Time,
+        };
+    }
 }

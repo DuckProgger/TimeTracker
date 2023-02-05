@@ -16,6 +16,8 @@ internal class WorksViewModel : ViewModelBase<WorkModel>
 
     public WorkModel NewWork { get; set; } = new();
 
+    public WorkModel SelectedWork { get; set; }
+
     #region Command AddWork - Команда добавить новую работу
 
     private ICommand? _AddWorkCommand;
@@ -26,7 +28,8 @@ internal class WorksViewModel : ViewModelBase<WorkModel>
 
     private async void OnAddWorkCommandExecuted()
     {
-        await workService.AddWork(NewWork.Name);
+       var createdWork = await workService.AddWork(NewWork.Name);
+       Collection.Add(WorkModel.Map(createdWork));
     }
 
     #endregion

@@ -10,8 +10,21 @@
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:WorksViewModel}"
              Background="{StaticResource MaterialDesignDarkBackground}">
-    <StackPanel>
-      <TextBox Text="{Binding NewWork.Name}"/>
-      <Button Content="Добавить" Command="{Binding AddWorkCommand}"/>
-    </StackPanel>
+  <StackPanel>
+    <TextBox Text="{Binding NewWork.Name}"/>
+    <Button Content="Добавить" Command="{Binding AddWorkCommand}"/>
+    <DataGrid ItemsSource="{Binding Collection, UpdateSourceTrigger=PropertyChanged}" 
+                SelectedItem="{Binding SelectedWork, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False">
+      <!--<DataGrid.InputBindings>
+        <MouseBinding MouseAction="LeftDoubleClick"
+                                  Command="{Binding SelectStoreItemCommand}"/>
+      </DataGrid.InputBindings>-->
+      <DataGrid.Columns>
+        <DataGridTextColumn Header="Название" Binding="{Binding Name}" IsReadOnly="True" />
+        <DataGridTextColumn Header="Трудозатраты" Binding="{Binding Time}" IsReadOnly="True"/>
+      </DataGrid.Columns>
+    </DataGrid>
+  </StackPanel>
 </UserControl>
