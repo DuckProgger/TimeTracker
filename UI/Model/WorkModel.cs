@@ -16,7 +16,7 @@ internal class WorkModel : ModelBase
         {
             Id = work.Id,
             Name = work.Name,
-            Time = work.Time,
+            Time = work.Workload,
         };
     }
 }

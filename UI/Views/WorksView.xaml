@@ -19,7 +19,7 @@
                 CanUserAddRows="False">
       <!--<DataGrid.InputBindings>
         <MouseBinding MouseAction="LeftDoubleClick"
-                                  Command="{Binding SelectStoreItemCommand}"/>
+                                  Command="{Binding }"/>
       </DataGrid.InputBindings>-->
       <DataGrid.Columns>
         <DataGridTextColumn Header="Название" Binding="{Binding Name}" IsReadOnly="True" />
