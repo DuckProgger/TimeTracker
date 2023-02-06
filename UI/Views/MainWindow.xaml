@@ -31,7 +31,7 @@
             <VirtualizingStackPanel  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Horizontal"/>
           </ItemsPanelTemplate>
         </Menu.ItemsPanel>
-        <MenuItem Header="Лента" 
+        <MenuItem Header="Трудозатраты" 
                   Command="{Binding NavigateToOtherViewCommand}"
                   CommandParameter="{x:Static const:ViewNames.WorksViewName}"/>
       </Menu>

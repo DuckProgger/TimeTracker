@@ -8,9 +8,11 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:views="clr-namespace:UI.Views"
              xmlns:c="clr-namespace:UI.Converters"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              mvvm:ViewModelLocator.AutoWireViewModel="True"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              d:DataContext="{d:DesignInstance viewModels:WorksViewModel}"
              Background="{StaticResource MaterialDesignDarkBackground}">
   <UserControl.Resources>
@@ -22,7 +24,22 @@
     </i:EventTrigger>
   </i:Interaction.Triggers>
   <StackPanel>
-    <TextBox Text="{Binding NewWork.Name}"/>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="0.2*"/>
+      </Grid.ColumnDefinitions>
+      <TextBox Text="{Binding NewWork.Name}"
+               materialDesign:HintAssist.Hint="Название работы"
+               Style="{StaticResource MaterialDesignOutlinedTextBox}"
+               Padding="5"
+               Margin="5"
+               FontSize="16"/>
+      <StackPanel Grid.Column="1">
+        <TextBlock Text="Дата рабочего дня" HorizontalAlignment="Center"/>
+        <DatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay, Converter={StaticResource DateConverter}}" Margin="5"/>
+      </StackPanel>
+    </Grid>
     <Button Content="Добавить" Command="{Binding AddWorkCommand}"/>
     <DataGrid ItemsSource="{Binding Collection, UpdateSourceTrigger=PropertyChanged}" 
                 SelectedItem="{Binding SelectedWork, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
@@ -42,17 +59,17 @@
                 <Button 
                   Command="{Binding 
                                     RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorksView}}, 
-                                    Path=DataContext.NavigateToOtherWindowCommand}"
-                  CommandParameter="EditItemView"/>
+                                    Path=DataContext.AddWorkloadManuallyCommand}"
+                  CommandParameter="EditItemView"
+                  Content="{materialDesign:PackIcon Kind=Plus}"/>
               </StackPanel>
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
       </DataGrid.Columns>
     </DataGrid>
-    <StackPanel Grid.Column="1">
-      <TextBlock Text="Начало" HorizontalAlignment="Center"/>
-      <DatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay, Converter={StaticResource DateConverter}}" Margin="5"/>
-    </StackPanel>
+   
+    <!--Уведомления-->
+    <ListBox Template="{StaticResource NotifierTemplate}"/>
   </StackPanel>
 </UserControl>

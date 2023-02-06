@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="UI.Views.AddWorkloadManuallyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UI.Views"
+             xmlns:mvvm="http://prismlibrary.com/"
+             xmlns:viewModels="clr-namespace:UI.ViewModels"
+             xmlns:converters="clr-namespace:UI.Converters"
+             mc:Ignorable="d" 
+             mvvm:ViewModelLocator.AutoWireViewModel="True"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             d:DataContext="{d:DesignInstance viewModels:AddWorkloadManuallyViewModel}"
+             Background="{StaticResource MaterialDesignDarkBackground}"
+             d:DesignHeight="50" d:DesignWidth="200">
+  <UserControl.Resources>
+    <converters:TimeConverter x:Key="TimeConverter"/>
+  </UserControl.Resources>
+  <StackPanel>
+          <TextBox Text="{Binding SelectedWorkload, Converter={StaticResource TimeConverter}}"/>  
+          <Button Content="Ok" Command="{Binding ConfirmCommand}"/>
+    </StackPanel>
+</UserControl>
