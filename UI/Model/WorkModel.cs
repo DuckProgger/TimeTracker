@@ -1,4 +1,5 @@
-﻿using Entity;
+﻿using System;
+using Entity;
 
 namespace UI.Model;
 
@@ -8,7 +9,7 @@ internal class WorkModel : ModelBase
 
     public string Name { get; set; }
 
-    public double Time { get; set; }
+    public TimeSpan Workload { get; set; }
 
     public static WorkModel Map(Work work)
     {
@@ -16,7 +17,7 @@ internal class WorkModel : ModelBase
         {
             Id = work.Id,
             Name = work.Name,
-            Time = work.Workload,
+            Workload = work.Workload,
         };
     }
 }

@@ -22,15 +22,15 @@ internal class WorksViewModel : ViewModelBase<WorkModel>
     public DateOnly SelectedDate { get; set; }
     public WorkModel SelectedWork { get; set; }
 
-    #region Command InitDataCommand - Команда инициализировать данные на форме
+    #region Command InitData - Команда Команда инициализировать данные на форме
 
-    private ICommand? _InitDataCommandCommand;
+    private ICommand? _InitDataCommand;
 
-    /// <summary>Команда - инициализировать данные на форме</summary>
-    public ICommand InitDataCommandCommand => _InitDataCommandCommand
-        ??= new DelegateCommand(OnInitDataCommandCommandExecuted);
+    /// <summary>Команда - Команда инициализировать данные на форме</summary>
+    public ICommand InitDataCommand => _InitDataCommand
+        ??= new DelegateCommand(OnInitDataCommandExecuted);
 
-    private async void OnInitDataCommandCommandExecuted()
+    private async void OnInitDataCommandExecuted()
     {
         SelectedDate = DateOnlyHelper.Today();
         var works = await workdayService.GetWorks(SelectedDate);

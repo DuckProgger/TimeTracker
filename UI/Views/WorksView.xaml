@@ -7,11 +7,15 @@
              xmlns:viewModels="clr-namespace:UI.ViewModels"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:views="clr-namespace:UI.Views"
+             xmlns:c="clr-namespace:UI.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:WorksViewModel}"
              Background="{StaticResource MaterialDesignDarkBackground}">
+  <UserControl.Resources>
+    <c:DateConverter x:Key="DateConverter"/>
+  </UserControl.Resources>
   <i:Interaction.Triggers>
     <i:EventTrigger EventName="Loaded">
       <i:InvokeCommandAction Command="{Binding InitDataCommand}"/>
@@ -30,7 +34,7 @@
       </DataGrid.InputBindings>-->
       <DataGrid.Columns>
         <DataGridTextColumn Header="Название" Binding="{Binding Name}" IsReadOnly="True" />
-        <DataGridTextColumn Header="Трудозатраты" Binding="{Binding Time}" IsReadOnly="True"/>
+        <DataGridTextColumn Header="Трудозатраты" Binding="{Binding Workload}" IsReadOnly="True"/>
         <DataGridTemplateColumn>
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate>
@@ -48,7 +52,7 @@
     </DataGrid>
     <StackPanel Grid.Column="1">
       <TextBlock Text="Начало" HorizontalAlignment="Center"/>
-      <DatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay}" Margin="5"/>
+      <DatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay, Converter={StaticResource DateConverter}}" Margin="5"/>
     </StackPanel>
   </StackPanel>
 </UserControl>
