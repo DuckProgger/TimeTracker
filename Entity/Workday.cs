@@ -9,5 +9,5 @@ public class Workday : EntityBase
     /// </summary>
     public DateOnly Date { get; set; }
 
-    ICollection<Work> Works { get; set; }
+    public ICollection<Work> Works { get; set; }
 }

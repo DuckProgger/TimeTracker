@@ -11,21 +11,20 @@ namespace UI;
 /// </summary>
 public class ApplicationContextFactory : IDesignTimeDbContextFactory<ApplicationContext>
 {
-    public static ApplicationContext CreateDbContext() =>
-        new ApplicationContext(
+    public static ApplicationContext CreateDbContext()
+    {
+        return new ApplicationContext(
             new DbContextOptionsBuilder<ApplicationContext>()
                 .UseSqlite(GetConnectionString()).Options);
+    }
+
 
     internal static string GetConnectionString()
     {
         ConfigurationBuilder builder = new ConfigurationBuilder();
-        // установка пути к текущему каталогу
         builder.SetBasePath(Directory.GetCurrentDirectory());
-        // получаем конфигурацию из файла appsettings.json
         builder.AddJsonFile("appsettings.json");
-        // создаем конфигурацию
         IConfigurationRoot config = builder.Build();
-        // получаем строку подключения
         return config.GetConnectionString("DefaultConnection");
     }
 

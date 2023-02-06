@@ -37,7 +37,7 @@ namespace Database.Migrations
 
                     b.HasIndex("WorkdayId");
 
-                    b.ToTable("Works");
+                    b.ToTable("Works", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Workday", b =>
@@ -51,7 +51,7 @@ namespace Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Workdays");
+                    b.ToTable("Workdays", (string)null);
                 });
 
             modelBuilder.Entity("Entity.Work", b =>
