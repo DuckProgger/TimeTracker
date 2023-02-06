@@ -30,10 +30,11 @@ public class DbRepository<T> : IRepository<T> where T : EntityBase
         return entity;
     }
 
-    public async Task EditAsync(T entity, CancellationToken cancel = default)
+    public async Task<T> EditAsync(T entity, CancellationToken cancel = default)
     {
         dbContext.Set<T>().Update(entity);
         await SaveChangesAsync(cancel);
+        return entity;
     }
 
     public async Task RemoveAsync(T entity, CancellationToken cancel = default)

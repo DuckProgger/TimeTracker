@@ -1,4 +1,6 @@
-﻿namespace Services.Infrastructure;
+﻿using System;
+
+namespace UI.Infrastructure;
 
 internal class DateOnlyHelper
 {

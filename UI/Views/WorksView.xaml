@@ -5,11 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mvvm="http://prismlibrary.com/"
              xmlns:viewModels="clr-namespace:UI.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:views="clr-namespace:UI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:WorksViewModel}"
              Background="{StaticResource MaterialDesignDarkBackground}">
+  <i:Interaction.Triggers>
+    <i:EventTrigger EventName="Loaded">
+      <i:InvokeCommandAction Command="{Binding InitDataCommand}"/>
+    </i:EventTrigger>
+  </i:Interaction.Triggers>
   <StackPanel>
     <TextBox Text="{Binding NewWork.Name}"/>
     <Button Content="Добавить" Command="{Binding AddWorkCommand}"/>
@@ -24,7 +31,24 @@
       <DataGrid.Columns>
         <DataGridTextColumn Header="Название" Binding="{Binding Name}" IsReadOnly="True" />
         <DataGridTextColumn Header="Трудозатраты" Binding="{Binding Time}" IsReadOnly="True"/>
+        <DataGridTemplateColumn>
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <Button 
+                  Command="{Binding 
+                                    RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorksView}}, 
+                                    Path=DataContext.NavigateToOtherWindowCommand}"
+                  CommandParameter="EditItemView"/>
+              </StackPanel>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
       </DataGrid.Columns>
     </DataGrid>
+    <StackPanel Grid.Column="1">
+      <TextBlock Text="Начало" HorizontalAlignment="Center"/>
+      <DatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay}" Margin="5"/>
+    </StackPanel>
   </StackPanel>
 </UserControl>
