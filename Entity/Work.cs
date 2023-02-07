@@ -12,6 +12,9 @@ public class Work : NamedEntity
     public Workday Workday { get; set; }
     public int WorkdayId { get; set; }
 
+    public WorkloadTimer? WorkloadTimer { get; set; }
+    //public int? WorkloadTimerId { get; set; }
+
     public Work(string name)
     {
         Name = name;

@@ -33,7 +33,7 @@
                materialDesign:HintAssist.Hint="Название работы"
                Style="{StaticResource MaterialDesignOutlinedTextBox}"
                Padding="5"
-               Margin="5"
+               Margin="10"
                FontSize="16"/>
       <StackPanel Grid.Column="1">
         <TextBlock Text="Дата рабочего дня" HorizontalAlignment="Center"/>
@@ -62,6 +62,16 @@
                                     Path=DataContext.AddWorkloadManuallyCommand}"
                   CommandParameter="EditItemView"
                   Content="{materialDesign:PackIcon Kind=Plus}"/>
+                <Button 
+                  Command="{Binding 
+                                    RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorksView}}, 
+                                    Path=DataContext.StartRecordingCommand}"
+                  Content="{materialDesign:PackIcon Kind=Clock}"/>
+                <Button 
+                  Command="{Binding 
+                                    RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorksView}}, 
+                                    Path=DataContext.StopRecordingCommand}"
+                  Content="{materialDesign:PackIcon Kind=Stop}"/>
               </StackPanel>
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>

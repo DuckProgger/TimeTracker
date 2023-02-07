@@ -99,4 +99,50 @@ internal class WorksViewModel : ViewModelBase<WorkModel>
     }
 
     #endregion
+
+    #region Command StartRecording - Команда запустить таймер для работы
+
+    private ICommand? _StartRecordingCommand;
+
+    /// <summary>Команда - запустить таймер для работы</summary>
+    public ICommand StartRecordingCommand => _StartRecordingCommand
+        ??= new DelegateCommand(OnStartRecordingCommandExecuted);
+
+    private async void OnStartRecordingCommandExecuted()
+    {
+        try
+        {
+            await workdayService.StartRecording(SelectedWork.Id);
+            await RefreshWorkCollection();
+        }
+        catch (Exception e)
+        {
+            Notifier.AddError(e.Message);
+        }
+    }
+
+    #endregion
+
+    #region Command StopRecording - Команда остановить таймер для работы
+
+    private ICommand? _StopRecordingCommand;
+
+    /// <summary>Команда - остановить таймер для работы</summary>
+    public ICommand StopRecordingCommand => _StopRecordingCommand
+        ??= new DelegateCommand(OnStopRecordingCommandExecuted);
+
+    private async void OnStopRecordingCommandExecuted()
+    {
+        try
+        {
+            await workdayService.StopRecording(SelectedWork.Id);
+            await RefreshWorkCollection();
+        }
+        catch (Exception e)
+        {
+            Notifier.AddError(e.Message);
+        }
+    }
+
+    #endregion
 }
