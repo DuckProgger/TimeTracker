@@ -34,16 +34,13 @@ public class WorkdayService
             .FirstOrDefaultAsync();
         if (workday == null)
         {
-            var newWorkday = new Workday()
-            {
-                Date = workdayDate,
-                Works = new List<Work>() { newWork }
-            };
+            var newWorkday = new Workday(workdayDate);
+            newWorkday.AddWork(newWork);
             await workdayRepository.CreateAsync(newWorkday);
         }
         else
         {
-            workday.Works.Add(newWork);
+            workday.AddWork(newWork);
             await workdayRepository.EditAsync(workday);
         }
 
@@ -55,7 +52,7 @@ public class WorkdayService
         var work = await workRepository.GetAsync(workId);
         if (work == null)
             throw new Exception($"Work with Id = {workId} not found.");
-        work.Workload += workload;
+        work.AddWorkload(workload);
         return await workRepository.EditAsync(work);
     }
 
@@ -66,11 +63,7 @@ public class WorkdayService
             .FirstOrDefaultAsync(w => w.Id == workId);
         if (work == null)
             throw new Exception($"Work with Id = {workId} not found.");
-        work.WorkloadTimer = new WorkloadTimer()
-        {
-            StartRecording = DateTime.Now,
-            Work = work
-        };
+        work.StartRecording();
         return await workRepository.EditAsync(work);
     }
 
@@ -81,27 +74,28 @@ public class WorkdayService
             .FirstOrDefaultAsync(w => w.Id == workId);
         if (work == null)
             throw new Exception($"Work with Id = {workId} not found.");
-        if(work.WorkloadTimer == null)
-            throw new Exception($"Work with Id = {workId} is not active.");
-
-        var elapsedTime = DateTime.Now - work.WorkloadTimer.StartRecording;
-        work.Workload += elapsedTime;
-        work.WorkloadTimer = null;
+        work.StopRecording();
         return await workRepository.EditAsync(work);
-
     }
 
-    //public async Task<int?> GetActiveWorkId(DateOnly workdayDate)
-    //{
-    //    GetWorkdayQueryable(workdayDate)
-    //        .Select(wd => wd.Works)
-    //}
-    private async Task<Work> GetWork(int workId)
+    public async Task RemoveWork(int workId)
     {
         var work = await workRepository.GetAsync(workId);
         if (work == null)
             throw new Exception($"Work with Id = {workId} not found.");
-        return work;
+
+        await workRepository.RemoveAsync(work);
+    }
+
+    public async Task EditWork(int workId, string name, TimeSpan workload)
+    {
+        var work = await workRepository.GetAsync(workId);
+        if (work == null)
+            throw new Exception($"Work with Id = {workId} not found.");
+
+        work.ChangeName(name);
+        work.ChangeWorkload(workload);
+        await workRepository.EditAsync(work);
     }
 
     private IQueryable<Workday> GetWorkdayQueryable(DateOnly workdayDate)

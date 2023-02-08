@@ -5,9 +5,9 @@ namespace UI.Views
     /// <summary>
     /// Логика взаимодействия для WorksView.xaml
     /// </summary>
-    public partial class WorksView : UserControl
+    public partial class WorkdayView : UserControl
     {
-        public WorksView()
+        public WorkdayView()
         {
             InitializeComponent();
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Prism.Commands;
+using Prism.Regions;
 using Services;
 using UI.Infrastructure;
 using UI.Model;
@@ -11,11 +12,11 @@ using UI.Views;
 
 namespace UI.ViewModels;
 
-internal class WorksViewModel : ViewModelBase<WorkModel>
+internal class WorkdayViewModel : ViewModelBase<WorkModel>
 {
     private readonly WorkdayService workdayService;
 
-    public WorksViewModel(WorkdayService workdayService)
+    public WorkdayViewModel(WorkdayService workdayService)
     {
         this.workdayService = workdayService;
     }
@@ -142,6 +143,29 @@ internal class WorksViewModel : ViewModelBase<WorkModel>
         {
             Notifier.AddError(e.Message);
         }
+    }
+
+    #endregion
+
+    #region Command EditWork - Команда редактировать работу
+
+    private ICommand? _EditWorkCommand;
+
+    /// <summary>Команда - редактировать работу</summary>
+    public ICommand EditWorkCommand => _EditWorkCommand
+        ??= new DelegateCommand(OnEditWorkCommandExecuted);
+
+    private async void OnEditWorkCommandExecuted()
+    {
+        DialogService dialogService = ServiceLocator.GetService<DialogService>();
+        dialogService.AddParameter("work", SelectedWork);
+        var result = await dialogService.ShowDialog(nameof(WorkView));
+        if (result.Parameters.TryGetValue<WorkModel>("work2", out var work))
+        {
+            await workdayService.EditWork(work.Id, work.Name, work.Workload);
+        }
+
+        await RefreshWorkCollection();
     }
 
     #endregion

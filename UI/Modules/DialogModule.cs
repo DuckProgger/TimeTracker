@@ -13,12 +13,14 @@ internal class DialogModule : IModule
         IRegionManager regionManager = containerProvider.Resolve<IRegionManager>();
         regionManager
             .RegisterViewWithRegion(RegionNames.Dialog, typeof(AddWorkloadManuallyView))
+            .RegisterViewWithRegion(RegionNames.Dialog, typeof(WorkView))
             ;
     }
 
     public void RegisterTypes(IContainerRegistry containerRegistry)
     {
         containerRegistry.RegisterForNavigation<AddWorkloadManuallyView>();
+        containerRegistry.RegisterForNavigation<WorkView>();
 
     }
 }

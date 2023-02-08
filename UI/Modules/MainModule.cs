@@ -15,12 +15,12 @@ internal class MainModule : IModule
     {
         IRegionManager regionManager = containerProvider.Resolve<IRegionManager>();
         regionManager
-             .RegisterViewWithRegion(RegionNames.Main, typeof(WorksView))
+             .RegisterViewWithRegion(RegionNames.Main, typeof(WorkdayView))
         ;
 
     }
     public void RegisterTypes(IContainerRegistry containerRegistry)
     {
-        containerRegistry.RegisterForNavigation<WorksView>();
+        containerRegistry.RegisterForNavigation<WorkdayView>();
     }
 }
