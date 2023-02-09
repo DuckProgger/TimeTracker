@@ -78,34 +78,36 @@
           <DataGridTemplateColumn>
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <StackPanel Orientation="Horizontal">
-                  <Button 
-                  Command="{Binding 
-                                    RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
-                                    Path=DataContext.AddWorkloadManuallyCommand}"
-                  CommandParameter="EditItemView"
-                  Content="{materialDesign:PackIcon Kind=Plus}"/>
-                  <Button 
-                  Command="{Binding 
-                                    RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
+                <DockPanel >
+                  <Button DockPanel.Dock="Left"
+                          Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}},
+                                            Path=DataContext.AddWorkloadManuallyCommand}"
+                          CommandParameter="EditItemView"
+                          Content="{materialDesign:PackIcon Kind=Plus}"
+                          Style="{StaticResource FlatButtonStyle}"/>
+                  <Button DockPanel.Dock="Left"
+                          Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
                                     Path=DataContext.StartRecordingCommand}"
-                  Content="{materialDesign:PackIcon Kind=Clock}"
-                  Visibility="{Binding IsActive, Converter={StaticResource InverseBoolToVisConverter}}"/>
-                  <Button 
-                  Command="{Binding 
-                                    RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
+                          Content="{materialDesign:PackIcon Kind=Clock}"
+                          Visibility="{Binding IsActive, Converter={StaticResource InverseBoolToVisConverter}}"
+                          Style="{StaticResource FlatButtonStyle}"/>
+                  <Button DockPanel.Dock="Left"
+                          Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
                                     Path=DataContext.StopRecordingCommand}"
-                  Content="{materialDesign:PackIcon Kind=Stop}"
-                  Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                  <Button 
-                  Command="{Binding 
-                                    RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
+                          Content="{materialDesign:PackIcon Kind=Stop}"
+                          Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"
+                          Style="{StaticResource FlatButtonStyle}"/>
+                  <Button DockPanel.Dock="Right"
+                          Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
                                     Path=DataContext.EditWorkCommand}"
-                  Content="{materialDesign:PackIcon Kind=Pen}"/>
-                  <Button 
-                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-                    Content="{materialDesign:PackIcon Kind=TrashCan}"/>
-                </StackPanel>
+                          Content="{materialDesign:PackIcon Kind=Pen}"
+                          Style="{StaticResource FlatButtonStyle}"/>
+                  <Button DockPanel.Dock="Right"
+                          Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                          Content="{materialDesign:PackIcon Kind=TrashCan}"
+                          Style="{StaticResource FlatButtonStyle}"/>
+                  <Label DockPanel.Dock="Bottom"/>
+                </DockPanel>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
