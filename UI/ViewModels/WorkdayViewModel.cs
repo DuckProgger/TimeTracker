@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Prism.Commands;
+using Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Prism.Commands;
-using Prism.Regions;
-using Services;
 using UI.Infrastructure;
 using UI.Model;
 using UI.Views;
+using MDDialogHost = MaterialDesignThemes.Wpf.DialogHost;
+
 
 namespace UI.ViewModels;
 
@@ -157,6 +158,7 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
 
     private async void OnEditWorkCommandExecuted()
     {
+        // TODO сделать механизм типа AddOrChangeParameter, вынести строки в константы
         DialogService dialogService = ServiceLocator.GetService<DialogService>();
         dialogService.AddParameter("work", SelectedWork);
         var result = await dialogService.ShowDialog(nameof(WorkView));
@@ -165,6 +167,23 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
             await workdayService.EditWork(work.Id, work.Name, work.Workload);
         }
 
+        await RefreshWorkCollection();
+    }
+
+    #endregion
+
+    #region Command DeleteWork - Команда удалить работу
+
+    private ICommand? _DeleteWorkCommand;
+
+    /// <summary>Команда - удалить работу</summary>
+    public ICommand DeleteWorkCommand => _DeleteWorkCommand
+        ??= new DelegateCommand(OnDeleteWorkCommandExecuted);
+
+    private async void OnDeleteWorkCommandExecuted()
+    {
+        await workdayService.RemoveWork(SelectedWork.Id);
+        MDDialogHost.CloseDialogCommand.Execute(null, null);
         await RefreshWorkCollection();
     }
 

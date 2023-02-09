@@ -23,68 +23,96 @@
       <i:InvokeCommandAction Command="{Binding InitDataCommand}"/>
     </i:EventTrigger>
   </i:Interaction.Triggers>
-  <StackPanel>
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="0.2*"/>
-      </Grid.ColumnDefinitions>
-      <TextBox Text="{Binding NewWork.Name}"
+  <materialDesign:DialogHost>
+
+    <materialDesign:DialogHost.DialogContent>
+      <StackPanel Margin="20" MinWidth="300">
+        <TextBlock Text="Удалить выбранную работу?" />
+        <Grid Margin="0,10,0,-10">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+
+          <Button Content="Отмена"
+                    Style="{StaticResource MaterialDesignFlatAccentButton}"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" />
+          <Button Content="Удалить"
+                    Grid.Column="1"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    IsDefault="True"
+                    Command="{Binding DeleteWorkCommand}" />
+        </Grid>
+      </StackPanel>
+    </materialDesign:DialogHost.DialogContent>
+    <StackPanel>
+
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="0.2*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox Text="{Binding NewWork.Name}"
                materialDesign:HintAssist.Hint="Название работы"
                Style="{StaticResource MaterialDesignOutlinedTextBox}"
                Padding="5"
                Margin="10"
                FontSize="16"/>
-      <StackPanel Grid.Column="1">
-        <TextBlock Text="Дата рабочего дня" HorizontalAlignment="Center"/>
-        <DatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay, Converter={StaticResource DateConverter}}" Margin="5"/>
-      </StackPanel>
-    </Grid>
-    <Button Content="Добавить" Command="{Binding AddWorkCommand}"/>
-    <DataGrid ItemsSource="{Binding Collection, UpdateSourceTrigger=PropertyChanged}" 
+        <StackPanel Grid.Column="1">
+          <TextBlock Text="Дата рабочего дня" HorizontalAlignment="Center"/>
+          <DatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay, Converter={StaticResource DateConverter}}" Margin="5"/>
+        </StackPanel>
+      </Grid>
+      <Button Content="Добавить" Command="{Binding AddWorkCommand}"/>
+      <DataGrid ItemsSource="{Binding Collection, UpdateSourceTrigger=PropertyChanged}" 
                 SelectedItem="{Binding SelectedWork, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False">
-      <!--<DataGrid.InputBindings>
+        <!--<DataGrid.InputBindings>
         <MouseBinding MouseAction="LeftDoubleClick"
                                   Command="{Binding }"/>
       </DataGrid.InputBindings>-->
-      <DataGrid.Columns>
-        <DataGridTextColumn Header="Название" Binding="{Binding Name}" IsReadOnly="True" />
-        <DataGridTextColumn Header="Трудозатраты" Binding="{Binding Workload}" IsReadOnly="True"/>
-        <DataGridTemplateColumn>
-          <DataGridTemplateColumn.CellTemplate>
-            <DataTemplate>
-              <StackPanel Orientation="Horizontal">
-                <Button 
+        <DataGrid.Columns>
+          <DataGridTextColumn Header="Название" Binding="{Binding Name}" IsReadOnly="True" />
+          <DataGridTextColumn Header="Трудозатраты" Binding="{Binding Workload}" IsReadOnly="True"/>
+          <DataGridTemplateColumn>
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Horizontal">
+                  <Button 
                   Command="{Binding 
                                     RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
                                     Path=DataContext.AddWorkloadManuallyCommand}"
                   CommandParameter="EditItemView"
                   Content="{materialDesign:PackIcon Kind=Plus}"/>
-                <Button 
+                  <Button 
                   Command="{Binding 
                                     RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
                                     Path=DataContext.StartRecordingCommand}"
                   Content="{materialDesign:PackIcon Kind=Clock}"/>
-                <Button 
+                  <Button 
                   Command="{Binding 
                                     RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
                                     Path=DataContext.StopRecordingCommand}"
                   Content="{materialDesign:PackIcon Kind=Stop}"/>
-                <Button 
+                  <Button 
                   Command="{Binding 
                                     RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
                                     Path=DataContext.EditWorkCommand}"
                   Content="{materialDesign:PackIcon Kind=Pen}"/>
-              </StackPanel>
-            </DataTemplate>
-          </DataGridTemplateColumn.CellTemplate>
-        </DataGridTemplateColumn>
-      </DataGrid.Columns>
-    </DataGrid>
-   
-    <!--Уведомления-->
-    <ListBox Template="{StaticResource NotifierTemplate}"/>
-  </StackPanel>
+                  <Button 
+                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                    Content="{materialDesign:PackIcon Kind=TrashCan}"/>
+                </StackPanel>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+        </DataGrid.Columns>
+      </DataGrid>
+
+      <!--Уведомления-->
+      <ListBox Template="{StaticResource NotifierTemplate}"/>
+    </StackPanel>
+  </materialDesign:DialogHost>
+
 </UserControl>
