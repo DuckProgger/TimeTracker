@@ -3,6 +3,7 @@ using Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using UI.Infrastructure;
@@ -16,6 +17,7 @@ namespace UI.ViewModels;
 internal class WorkdayViewModel : ViewModelBase<WorkModel>
 {
     private readonly WorkdayService workdayService;
+    private Timer collectionRefresher;
 
     public WorkdayViewModel(WorkdayService workdayService)
     {
@@ -40,6 +42,16 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
     {
         var works = await workdayService.GetWorks(SelectedDate);
         Collection = new ObservableCollection<WorkModel>(works.Select(WorkModel.Map));
+    }
+
+    private void StartCollectionRefreshTimer()
+    {
+        collectionRefresher = new(_ => RefreshWorkCollection(), null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
+    }
+
+    private void StopCollectionRefreshTimer()
+    {
+        collectionRefresher.Dispose();
     }
 
     #region Command InitData - Команда Команда инициализировать данные на форме
@@ -116,6 +128,7 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
         {
             await workdayService.StartRecording(SelectedWork.Id);
             await RefreshWorkCollection();
+            StartCollectionRefreshTimer();
         }
         catch (Exception e)
         {
@@ -139,6 +152,7 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
         {
             await workdayService.StopRecording(SelectedWork.Id);
             await RefreshWorkCollection();
+            StopCollectionRefreshTimer();
         }
         catch (Exception e)
         {

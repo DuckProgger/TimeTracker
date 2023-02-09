@@ -15,7 +15,7 @@ internal class WorkModel : ModelBase
 
     public TimeSpan? TimeElapsed => startRecording.HasValue
         ? DateTime.Now - startRecording
-        : TimeSpan.MinValue;
+        : TimeSpan.Zero;
 
     public static WorkModel Map(Work work)
     {

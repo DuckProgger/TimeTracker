@@ -68,14 +68,14 @@
                 SelectedItem="{Binding SelectedWork, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False">
-        <!--<DataGrid.InputBindings>
+        <DataGrid.InputBindings>
         <MouseBinding MouseAction="LeftDoubleClick"
-                                  Command="{Binding }"/>
-      </DataGrid.InputBindings>-->
+                                  Command="{Binding EditWorkCommand}"/>
+      </DataGrid.InputBindings>
         <DataGrid.Columns>
           <DataGridTextColumn Header="Название" Binding="{Binding Name}" IsReadOnly="True" />
           <DataGridTextColumn Header="Трудозатраты" Binding="{Binding Workload}" IsReadOnly="True"/>
-          <DataGridTemplateColumn>
+          <DataGridTemplateColumn Width="*">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
                 <DockPanel >
@@ -97,6 +97,8 @@
                           Content="{materialDesign:PackIcon Kind=Stop}"
                           Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"
                           Style="{StaticResource FlatButtonStyle}"/>
+                  <TextBlock Text="{Binding TimeElapsed}" 
+                             Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                   <Button DockPanel.Dock="Right"
                           Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
                                     Path=DataContext.EditWorkCommand}"
