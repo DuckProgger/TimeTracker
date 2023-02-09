@@ -89,12 +89,14 @@
                   Command="{Binding 
                                     RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
                                     Path=DataContext.StartRecordingCommand}"
-                  Content="{materialDesign:PackIcon Kind=Clock}"/>
+                  Content="{materialDesign:PackIcon Kind=Clock}"
+                  Visibility="{Binding IsActive, Converter={StaticResource InverseBoolToVisConverter}}"/>
                   <Button 
                   Command="{Binding 
                                     RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
                                     Path=DataContext.StopRecordingCommand}"
-                  Content="{materialDesign:PackIcon Kind=Stop}"/>
+                  Content="{materialDesign:PackIcon Kind=Stop}"
+                  Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                   <Button 
                   Command="{Binding 
                                     RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
