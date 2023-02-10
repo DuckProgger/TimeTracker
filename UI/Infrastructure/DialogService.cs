@@ -66,12 +66,12 @@ internal class DialogService
     }
 
     private DialogWindow CreateDialogWindow(string viewName) {
-        MainWindow mainWindow = GetWindow<MainWindow>();
+        //MainWindow mainWindow = GetWindow<MainWindow>();
         DialogWindow dialogWindow = new();
-        dialogWindow.Closed += (s, e) => mainWindow.Show();
+        //dialogWindow.Closed += (s, e) => mainWindow.Show();
         dialogWindow.Closed += (s, e) => CallContext.Clear();
         dialogWindow.Closed += (s, e) => parameters = new();
-        mainWindow.Hide();
+        //mainWindow.Hide();
         dialogWindow.Show();
         IRegionManager regionManager = ServiceLocator.GetService<IRegionManager>();
         IRegionManager scopedRegionManager = regionManager.CreateRegionManager();

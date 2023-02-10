@@ -9,7 +9,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:converters="clr-namespace:UI.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="400"
+             Height="150" Width="400"
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              d:DataContext="{d:DesignInstance viewModels:WorkViewModel}"
@@ -17,14 +17,22 @@
   <UserControl.Resources>
     <converters:TimeConverter x:Key="TimeConverter"/>
   </UserControl.Resources>
-  <StackPanel>
-    <TextBox Text="{Binding ProccessedWork.Name}"
+  <DockPanel>
+    <TextBox DockPanel.Dock="Top"
+             Text="{Binding ProccessedWork.Name}"
              materialDesign:HintAssist.Hint="Название работы"
              Style="{StaticResource MaterialDesignOutlinedTextBox}"
              Padding="5"
              Margin="10"
              FontSize="16"/>
-    <TextBox Text="{Binding ProccessedWork.Workload, Converter={StaticResource TimeConverter}}"/>
-    <Button Content="Ok" Command="{Binding ConfirmCommand}"/>
-  </StackPanel>
+    <TextBox DockPanel.Dock="Top"
+             Text="{Binding ProccessedWork.Workload, Converter={StaticResource TimeConverter}}"
+             materialDesign:HintAssist.Hint="Трудозатраты"
+             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+             Padding="5"
+             Margin="10"
+             FontSize="16"/>
+    <Button DockPanel.Dock="Bottom" Content="Ok" Command="{Binding ConfirmCommand}"/>
+    <Label/>
+  </DockPanel>
 </UserControl>

@@ -10,7 +10,7 @@
         Title="{Binding ElementName=ContentView, Path=Content.DataContext.Title, UpdateSourceTrigger=PropertyChanged}"
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen"
-        Width="100" Height="100"
+        ResizeMode="NoResize"
         Background="#FAFAFA">
     <Grid>
         <!--<Grid.RowDefinitions>
