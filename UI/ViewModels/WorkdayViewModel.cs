@@ -38,10 +38,13 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
 
     public WorkModel SelectedWork { get; set; }
 
+    public TimeSpan TotalWorkload => Collection.Select(w => w.Workload).Aggregate((wl1, wl2) => wl1 + wl2);
+
     private async Task RefreshWorkCollection()
     {
         var works = await workdayService.GetWorks(SelectedDate);
         Collection = new ObservableCollection<WorkModel>(works.Select(WorkModel.Map));
+        OnPropertyChanged(nameof(TotalWorkload));
     }
 
     private void StartCollectionRefreshTimer()
