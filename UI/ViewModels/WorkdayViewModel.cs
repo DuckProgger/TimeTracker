@@ -17,7 +17,7 @@ namespace UI.ViewModels;
 internal class WorkdayViewModel : ViewModelBase<WorkModel>
 {
     private readonly WorkdayService workdayService;
-    private Timer collectionRefresher;
+    private Timer? collectionRefresher;
 
     public WorkdayViewModel(WorkdayService workdayService)
     {
@@ -46,12 +46,12 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
 
     private void StartCollectionRefreshTimer()
     {
-        collectionRefresher = new(_ => RefreshWorkCollection(), null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
+        collectionRefresher ??= new(_ => RefreshWorkCollection(), null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
     }
 
     private void StopCollectionRefreshTimer()
     {
-        collectionRefresher.Dispose();
+        collectionRefresher?.Dispose();
     }
 
     #region Command InitData - Команда Команда инициализировать данные на форме
@@ -64,7 +64,7 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
 
     private void OnInitDataCommandExecuted()
     {
-        SelectedDate = DateOnlyHelper.Today();
+        SelectedDate = DateTimeUtils.Today();
     }
 
     #endregion

@@ -5,12 +5,12 @@ using UI.Infrastructure;
 
 namespace UI.Converters;
 
-internal class TimeConverter : IValueConverter
+internal class FullTimeConverter : IValueConverter
 {
     public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         var time = (TimeSpan)value;
-        return $"{DateTimeUtils.ToStringWithZero(time.Hours)}:{DateTimeUtils.ToStringWithZero(time.Minutes)}";
+        return $"{DateTimeUtils.ToStringWithZero(time.Hours)}:{DateTimeUtils.ToStringWithZero(time.Minutes)}:{DateTimeUtils.ToStringWithZero(time.Seconds)}";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

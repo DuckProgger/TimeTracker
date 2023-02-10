@@ -17,6 +17,8 @@
              Background="{StaticResource MaterialDesignDarkBackground}">
   <UserControl.Resources>
     <c:DateConverter x:Key="DateConverter"/>
+    <c:ShortTimeConverter x:Key="ShortTimeConverter"/>
+    <c:FullTimeConverter x:Key="FullTimeConverter"/>
   </UserControl.Resources>
   <i:Interaction.Triggers>
     <i:EventTrigger EventName="Loaded">
@@ -74,7 +76,7 @@
       </DataGrid.InputBindings>
         <DataGrid.Columns>
           <DataGridTextColumn Header="Название" Binding="{Binding Name}" IsReadOnly="True" />
-          <DataGridTextColumn Header="Трудозатраты" Binding="{Binding Workload}" IsReadOnly="True"/>
+          <DataGridTextColumn Header="Трудозатраты" Binding="{Binding Workload, Converter={StaticResource ShortTimeConverter}}" IsReadOnly="True"/>
           <DataGridTemplateColumn Width="*">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
@@ -97,7 +99,7 @@
                           Content="{materialDesign:PackIcon Kind=Stop}"
                           Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"
                           Style="{StaticResource FlatButtonStyle}"/>
-                  <TextBlock Text="{Binding TimeElapsed}" 
+                  <TextBlock Text="{Binding TimeElapsed, Converter={StaticResource FullTimeConverter}}" 
                              Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                   <Button DockPanel.Dock="Right"
                           Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
