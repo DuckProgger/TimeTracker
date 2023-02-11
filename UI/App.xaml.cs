@@ -4,7 +4,6 @@ using Prism.Ioc;
 using Prism.Modularity;
 using System.Windows;
 using UI.DependencyInjection;
-using UI.Infrastructure;
 using UI.Modules;
 using UI.Views;
 
@@ -16,14 +15,13 @@ public partial class App
     {
         containerRegistry
             .AddDatabase()
-            .RegisterSingleton<DialogService>()
+            .AddDialogs()
             ;
     }
 
     protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog) {
         moduleCatalog
             .AddModule(typeof(MainModule))
-            .AddModule(typeof(DialogModule))
             ;
     }
 

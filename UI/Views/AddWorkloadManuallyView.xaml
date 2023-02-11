@@ -17,9 +17,12 @@
   <UserControl.Resources>
     <converters:TimeConverter x:Key="TimeConverter"/>
   </UserControl.Resources>
+  <mvvm:Dialog.WindowStyle>
+    <Style BasedOn="{StaticResource DialogStyle}" TargetType="Window"/>
+  </mvvm:Dialog.WindowStyle>
   <DockPanel>
     <TextBox DockPanel.Dock="Top"
-             Text="{Binding SelectedWorkload, Converter={StaticResource TimeConverter}}"
+             Text="{Binding ProccessedWorkload, Converter={StaticResource TimeConverter}}"
              materialDesign:HintAssist.Hint="Трудозатраты"
              FontSize="16"
              Margin="10"

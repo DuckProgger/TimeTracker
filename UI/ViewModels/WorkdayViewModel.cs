@@ -1,4 +1,5 @@
 ﻿using Prism.Commands;
+using Prism.Services.Dialogs;
 using Services;
 using System;
 using System.Collections.ObjectModel;
@@ -17,11 +18,13 @@ namespace UI.ViewModels;
 internal class WorkdayViewModel : ViewModelBase<WorkModel>
 {
     private readonly WorkdayService workdayService;
+    private readonly IDialogService dialogService;
     private Timer? collectionRefresher;
 
-    public WorkdayViewModel(WorkdayService workdayService)
+    public WorkdayViewModel(WorkdayService workdayService, IDialogService dialogService)
     {
         this.workdayService = workdayService;
+        this.dialogService = dialogService;
     }
 
     public WorkModel NewWork { get; set; } = new();
@@ -106,13 +109,12 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
 
     private async void OnAddWorkloadManuallyCommandExecuted()
     {
-        DialogService dialogService = ServiceLocator.GetService<DialogService>();
-        var result = await dialogService.ShowDialog(nameof(AddWorkloadManuallyView));
-        if (result.Parameters.TryGetValue<TimeSpan>("workload", out var workload))
-        {
-            await workdayService.AddWorkload(SelectedWork.Id, workload);
-        }
+        const string workloadParameterName = "workload";
+        var dialogResult = await dialogService.ShowDialogAsync<AddWorkloadManuallyView>();
+        if (dialogResult.Result != ButtonResult.OK) return;
 
+        dialogResult.Parameters.TryGetValue<TimeSpan>(workloadParameterName, out var workload);
+        await workdayService.AddWorkload(SelectedWork.Id, workload);
         await RefreshWorkCollection();
     }
 
@@ -176,15 +178,13 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
 
     private async void OnEditWorkCommandExecuted()
     {
-        // TODO сделать механизм типа AddOrChangeParameter, вынести строки в константы
-        DialogService dialogService = ServiceLocator.GetService<DialogService>();
-        dialogService.AddParameter("work", SelectedWork);
-        var result = await dialogService.ShowDialog(nameof(WorkView));
-        if (result.Parameters.TryGetValue<WorkModel>("work2", out var work))
-        {
-            await workdayService.EditWork(work.Id, work.Name, work.Workload);
-        }
+        const string workParameterName = "work";
+        var parameters = new DialogParameters { { workParameterName, SelectedWork } };
+        var dialogResult = await dialogService.ShowDialogAsync<WorkView>(parameters);
+        if (dialogResult.Result != ButtonResult.OK) return;
 
+        dialogResult.Parameters.TryGetValue<WorkModel>(workParameterName, out var work);
+        await workdayService.EditWork(work.Id, work.Name, work.Workload);
         await RefreshWorkCollection();
     }
 

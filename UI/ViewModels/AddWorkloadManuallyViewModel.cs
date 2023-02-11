@@ -1,18 +1,18 @@
-﻿using System;
-using Prism.Commands;
+﻿using Prism.Commands;
+using System;
 using System.Windows.Input;
-using UI.Infrastructure;
+using Prism.Services.Dialogs;
 
 namespace UI.ViewModels;
 
-internal class AddWorkloadManuallyViewModel : ViewModelBase
+internal class AddWorkloadManuallyViewModel : DialogViewModelBase
 {
     public AddWorkloadManuallyViewModel()
     {
         Title = "Добавить трудозатраты";
     }
 
-    public TimeSpan SelectedWorkload { get; set; }
+    public TimeSpan ProccessedWorkload { get; set; }
 
     #region Command Confirm - Команда Ок
 
@@ -22,12 +22,9 @@ internal class AddWorkloadManuallyViewModel : ViewModelBase
     public ICommand ConfirmCommand => _ConfirmCommand
         ??= new DelegateCommand(OnConfirmCommandExecuted);
 
-    private async void OnConfirmCommandExecuted()
+    private void OnConfirmCommandExecuted()
     {
-        DialogService dialogService = ServiceLocator.GetService<DialogService>();
-        dialogService.AddParameter("workload", SelectedWorkload);
-        dialogService.SetResult(DialogService.DialogResults.Ok);
-        dialogService.GoBack();
+        RaiseRequestClose(new DialogResult(ButtonResult.OK, new DialogParameters() { { "workload", ProccessedWorkload } }));
     }
 
     #endregion

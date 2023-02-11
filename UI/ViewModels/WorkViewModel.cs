@@ -1,23 +1,13 @@
-﻿using System;
-using Entity;
-using Prism.Commands;
-using Prism.Regions;
+﻿using Prism.Commands;
+using Prism.Services.Dialogs;
 using System.Windows.Input;
-using UI.Infrastructure;
 using UI.Model;
 
 namespace UI.ViewModels;
 
-internal class WorkViewModel : ViewModelBase
+internal class WorkViewModel : DialogViewModelBase
 {
-    public WorkModel ProccessedWork { get; set; }
-
-    public override void OnNavigatedTo(NavigationContext navigationContext)
-    {
-        if (navigationContext.Parameters["work"] is not WorkModel work)
-            throw new Exception($"parameter {nameof(navigationContext)} must be of {nameof(WorkModel)} type.");
-        ProccessedWork = work;
-    }
+    public WorkModel? ProccessedWork { get; set; }
 
     #region Command Confirm - Команда подтвердить
 
@@ -29,11 +19,18 @@ internal class WorkViewModel : ViewModelBase
 
     private void OnConfirmCommandExecuted()
     {
-        DialogService dialogService = ServiceLocator.GetService<DialogService>();
-        dialogService.AddParameter("work2", ProccessedWork);
-        dialogService.SetResult(DialogService.DialogResults.Ok);
-        dialogService.GoBack();
+        RaiseRequestClose(new DialogResult(ButtonResult.OK, new DialogParameters()
+        {
+            {"work", ProccessedWork}
+        }));
     }
 
     #endregion
+
+    public override void OnDialogOpened(IDialogParameters parameters)
+    {
+        parameters.TryGetValue<WorkModel>("work", out var work);
+        ProccessedWork = work;
+        Title = $"Редактирование работы {work.Name}";
+    }
 }
