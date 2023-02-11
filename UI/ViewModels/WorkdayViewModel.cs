@@ -55,6 +55,7 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
     private void StopCollectionRefreshTimer()
     {
         collectionRefresher?.Dispose();
+        collectionRefresher = null;
     }
 
     #region Command InitData - Команда Команда инициализировать данные на форме
