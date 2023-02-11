@@ -4,22 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UI.Views"
-             xmlns:mvvm="http://prismlibrary.com/"
+             xmlns:prism="http://prismlibrary.com/"
              xmlns:viewModels="clr-namespace:UI.ViewModels"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:converters="clr-namespace:UI.Converters"
              mc:Ignorable="d" 
              Height="150" Width="400"
-             mvvm:ViewModelLocator.AutoWireViewModel="True"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              d:DataContext="{d:DesignInstance viewModels:WorkViewModel}"
              Background="{StaticResource MaterialDesignDarkBackground}">
   <UserControl.Resources>
     <converters:TimeConverter x:Key="TimeConverter"/>
   </UserControl.Resources>
-  <mvvm:Dialog.WindowStyle>
+  <prism:Dialog.WindowStyle>
     <Style BasedOn="{StaticResource DialogStyle}" TargetType="Window"/>
-  </mvvm:Dialog.WindowStyle>
+  </prism:Dialog.WindowStyle>
   <DockPanel>
     <TextBox DockPanel.Dock="Top"
              Text="{Binding ProccessedWork.Name}"

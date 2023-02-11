@@ -9,7 +9,6 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:viewModels="clr-namespace:UI.ViewModels"
         mc:Ignorable="d"
-        regions:ViewModelLocator.AutoWireViewModel="True"
         Title="TimeTracker" Height="450" Width="800"
         WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
