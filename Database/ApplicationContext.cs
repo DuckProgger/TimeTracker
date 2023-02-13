@@ -13,6 +13,7 @@ public class ApplicationContext : DbContext
     public DbSet<Work> Works { get; set; }
     public DbSet<Workday> Workdays { get; set; }
     public DbSet<WorkloadTimer> WorkloadTimers { get; set; }
+    public DbSet<Screenshot> Screenshots { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
