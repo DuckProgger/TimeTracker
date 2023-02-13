@@ -6,11 +6,11 @@ namespace UI.Infrastructure;
 
 internal static class DialogServiceExtensions
 {
-    public static Task<IDialogResult> ShowDialogAsync<T>(this IDialogService dialogService, IDialogParameters? parameters = null)
-    where T : ContentControl
+    public static Task<IDialogResult> ShowDialogAsync<TView>(this IDialogService dialogService, IDialogParameters? parameters = null)
+    where TView : ContentControl
     {
         var tcs = new TaskCompletionSource<IDialogResult>();
-        dialogService.ShowDialog(typeof(T).Name, parameters, result => tcs.SetResult(result));
+        dialogService.ShowDialog(typeof(TView).Name, parameters, result => tcs.SetResult(result));
         return tcs.Task;
     }
 }

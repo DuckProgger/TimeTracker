@@ -52,4 +52,8 @@
     <Setter Property="SizeToContent" Value="WidthAndHeight"/>
   </Style>
 
+  <Style x:Key="ImageHighResStyle" TargetType="{x:Type Image}">
+    <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
+  </Style>
+
 </ResourceDictionary>

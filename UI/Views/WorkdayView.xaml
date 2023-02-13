@@ -98,7 +98,8 @@
                           Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"
                           Style="{StaticResource FlatButtonStyle}"/>
                   <TextBlock Text="{Binding TimeElapsed, Converter={StaticResource FullTimeConverter}}" 
-                             Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                             Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"
+                             Foreground="DarkRed"/>
                   <Button DockPanel.Dock="Right"
                           Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}, 
                                     Path=DataContext.EditWorkCommand}"

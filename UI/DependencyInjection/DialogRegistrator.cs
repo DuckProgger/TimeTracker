@@ -12,6 +12,7 @@ internal static class DialogRegistrator
     {
         container.RegisterDialog<AddWorkloadManuallyView>();
         container.RegisterDialog<WorkView>();
+        container.RegisterDialog<ScreenshotView>();
         return container;
     }
 }
