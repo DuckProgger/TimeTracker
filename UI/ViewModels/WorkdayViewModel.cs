@@ -41,7 +41,15 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
 
     public WorkModel SelectedWork { get; set; }
 
-    public TimeSpan TotalWorkload => Collection.Select(w => w.Workload).Aggregate((wl1, wl2) => wl1 + wl2);
+    public TimeSpan TotalWorkload
+    {
+        get
+        {
+            return Collection.Any() 
+                ? Collection.Select(w => w.Workload).Aggregate((wl1, wl2) => wl1 + wl2) 
+                : TimeSpan.Zero;
+        }
+    }
 
     private async Task RefreshWorkCollection()
     {
