@@ -1,5 +1,6 @@
 ﻿using Database;
 using Entity;
+using Entity.Base;
 using Microsoft.EntityFrameworkCore;
 using Services;
 
@@ -11,21 +12,19 @@ internal class TestApplicationContextHelper
     {
         return new ApplicationContext(
              new DbContextOptionsBuilder<ApplicationContext>()
-                 .UseSqlite("testDb.db3").Options);
+                 .UseSqlite("Data Source=.\\testDb.db3").Options);
     }
 
     public static void CleanDatabase()
     {
         using var db = Create();
         db.Database.EnsureDeleted();
+        db.Database.Migrate();
     }
 
-    public static void WrapInContext(Action action)
+    public static void WrapInContext(Action<ApplicationContext> action)
     {
-        using(var context = Create())
-        {
-            var workdayRepository = new DbRepository<Workday>(context);
-
-        }
+        using var context = Create();
+        action(context);
     }
 }
