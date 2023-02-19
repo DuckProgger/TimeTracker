@@ -8,14 +8,14 @@ public class WorkloadTimer : EntityBase
     public int WorkId { get; private set; }
     public DateTime StartRecordingDateTime { get; private set; }
 
-    public void StartRecording(int workId)
+    public void StartRecording(int workId, DateTime now)
     {
         WorkId = workId;
-        StartRecordingDateTime = DateTime.Now;
+        StartRecordingDateTime = now;
     }
 
-    public TimeSpan GetElapsedTime()
+    public TimeSpan GetElapsedTime(DateTime now)
     {
-        return DateTime.Now - StartRecordingDateTime;
+        return now - StartRecordingDateTime;
     }
 }

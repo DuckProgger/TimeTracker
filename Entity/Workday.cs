@@ -18,12 +18,26 @@ public class Workday : EntityBase
 
     public IReadOnlyCollection<Work> Works => works.AsReadOnly();
 
+    public TimeSpan TotalWorkload
+    {
+        get
+        {
+            return Works.Any() 
+                ? Works.Select(w => w.Workload).Aggregate((wl1, wl2) => wl1 + wl2) 
+                : TimeSpan.Zero;
+        }
+    }
+
     public void AddWork(Work work)
     {
+        var workWithSameNameExist = works.Any(w => w.Name == work.Name);
+        if (workWithSameNameExist)
+            throw new Exception($"Work with name {work.Name} already exist.");
+
         works.Add(work);
     }
 
-    public void StartRecording(int workId)
+    public void StartRecording(int workId, DateTime now)
     {
         var activeWorkExist = works.Any(w => w.IsActive);
         if (activeWorkExist)
@@ -36,15 +50,15 @@ public class Workday : EntityBase
         if (work == null)
             throw new Exception($"Work with Id = {workId} not exist");
 
-        work.StartRecording();
+        work.StartRecording(now);
     }
 
-    public void StopRecording(int workId)
+    public void StopRecording(int workId, DateTime now)
     {
         var work = works.FirstOrDefault(w => w.Id == workId);
         if (work == null)
             throw new Exception($"Work with Id = {workId} not exist");
 
-        work.StopRecording();
+        work.StopRecording(now);
     }
 }

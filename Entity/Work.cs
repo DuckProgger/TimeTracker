@@ -18,6 +18,9 @@ public class Work : NamedEntity
 
     public Work(string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new Exception("Work name can't be null or empty.");
+
         Name = name;
     }
 
@@ -28,29 +31,35 @@ public class Work : NamedEntity
 
     public void AddWorkload(TimeSpan workload)
     {
+        if (Workload + workload < TimeSpan.Zero)
+            throw new Exception("Workload can't be less then zero");
+
         Workload += workload;
     }
 
     public void ChangeWorkload(TimeSpan newWorkload)
     {
+        if (newWorkload < TimeSpan.Zero)
+            throw new Exception("Workload can't be less then zero");
+
         Workload = newWorkload;
     }
 
-    public void StartRecording()
+    public void StartRecording(DateTime now)
     {
         if (IsActive)
             throw new Exception($"Work with Id = {Id} already active.");
 
         WorkloadTimer = new();
-        WorkloadTimer.StartRecording(Id);
+        WorkloadTimer.StartRecording(Id, now);
     }
 
-    public void StopRecording()
+    public void StopRecording(DateTime now)
     {
         if (!IsActive)
             throw new Exception($"Work with Id = {Id} is not active.");
 
-        var elapsedTime = WorkloadTimer.GetElapsedTime();
+        var elapsedTime = WorkloadTimer.GetElapsedTime(now);
         AddWorkload(elapsedTime);
         WorkloadTimer = null;
     }

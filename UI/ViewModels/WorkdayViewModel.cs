@@ -27,7 +27,9 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
         this.dialogService = dialogService;
     }
 
-    public WorkModel NewWork { get; set; } = new();
+    public string NewWorkName { get; set; }
+
+    public WorkdayModel CurrentWorkday { get; set; }
 
     public DateOnly SelectedDate
     {
@@ -41,21 +43,10 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
 
     public WorkModel SelectedWork { get; set; }
 
-    public TimeSpan TotalWorkload
-    {
-        get
-        {
-            return Collection.Any() 
-                ? Collection.Select(w => w.Workload).Aggregate((wl1, wl2) => wl1 + wl2) 
-                : TimeSpan.Zero;
-        }
-    }
-
     private async Task RefreshWorkCollection()
     {
-        var works = await workdayService.GetWorks(SelectedDate);
-        Collection = new ObservableCollection<WorkModel>(works.Select(WorkModel.Map));
-        OnPropertyChanged(nameof(TotalWorkload));
+        var workday = await workdayService.GetByDate(SelectedDate);
+        CurrentWorkday = workday != null ? WorkdayModel.Map(workday) : new WorkdayModel();
     }
 
     private void StartCollectionRefreshTimer()
@@ -95,14 +86,16 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
 
     private async void OnAddWorkCommandExecuted()
     {
-        if (string.IsNullOrWhiteSpace(NewWork.Name))
+        try
         {
-            Notifier.AddError("Название работы не может быть пустым.");
-            return;
+            var createdWork = await workdayService.AddWork(SelectedDate, NewWorkName);
+            CurrentWorkday.Works.Add(WorkModel.Map(createdWork));
+            NewWorkName = string.Empty;
         }
-        var createdWork = await workdayService.AddWork(SelectedDate, NewWork.Name);
-        Collection.Add(WorkModel.Map(createdWork));
-        NewWork = new();
+        catch (Exception e)
+        {
+            Notifier.AddError(e.Message);
+        }
     }
 
     #endregion

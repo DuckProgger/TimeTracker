@@ -7,22 +7,17 @@ public class WorkdayService
 {
     private readonly IRepository<Workday> workdayRepository;
     private readonly IRepository<Work> workRepository;
-    private readonly IRepository<WorkloadTimer> workloadTimeRepository;
 
     public WorkdayService(IRepository<Workday> workdayRepository,
-        IRepository<Work> workRepository,
-        IRepository<WorkloadTimer> workloadTimeRepository)
+        IRepository<Work> workRepository)
     {
         this.workdayRepository = workdayRepository;
         this.workRepository = workRepository;
-        this.workloadTimeRepository = workloadTimeRepository;
     }
 
-    public async Task<IEnumerable<Work>> GetWorks(DateOnly workdayDate)
+    public async Task<Workday?> GetByDate(DateOnly workdayDate)
     {
-        var workday = await GetWorkdayQueryable(workdayDate)
-            .FirstOrDefaultAsync();
-        return workday?.Works ?? Enumerable.Empty<Work>();
+        return await GetWorkdayQueryable(workdayDate).FirstOrDefaultAsync();
     }
 
     public async Task<Work> AddWork(DateOnly workdayDate, string name)
@@ -62,7 +57,7 @@ public class WorkdayService
             .FirstOrDefaultAsync();
         if (workday == null)
             throw new Exception($"No work for {workdayDate}.");
-        workday.StartRecording(workId);
+        workday.StartRecording(workId, DateTime.Now);
         await workdayRepository.EditAsync(workday);
     }
 
@@ -72,7 +67,7 @@ public class WorkdayService
             .FirstOrDefaultAsync();
         if (workday == null)
             throw new Exception($"No work for {workdayDate}.");
-        workday.StopRecording(workId);
+        workday.StopRecording(workId, DateTime.Now);
         await workdayRepository.EditAsync(workday);
     }
 

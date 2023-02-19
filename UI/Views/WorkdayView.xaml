@@ -52,7 +52,7 @@
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="0.2*"/>
         </Grid.ColumnDefinitions>
-        <TextBox Text="{Binding NewWork.Name}"
+        <TextBox Text="{Binding NewWorkName}"
                materialDesign:HintAssist.Hint="Название работы"
                Style="{StaticResource MaterialDesignOutlinedTextBox}"
                Padding="5"
@@ -64,7 +64,7 @@
         </StackPanel>
       </Grid>
       <Button Content="Добавить" Command="{Binding AddWorkCommand}"/>
-      <DataGrid ItemsSource="{Binding Collection, UpdateSourceTrigger=PropertyChanged}" 
+      <DataGrid ItemsSource="{Binding CurrentWorkday.Works, UpdateSourceTrigger=PropertyChanged}" 
                 SelectedItem="{Binding SelectedWork, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False">
@@ -119,7 +119,7 @@
 
       <StackPanel Orientation="Horizontal">
         <TextBlock Text="Всего: "/>
-        <TextBlock Text="{Binding TotalWorkload, Converter={StaticResource ShortTimeConverter}}"/>
+        <TextBlock Text="{Binding CurrentWorkday.TotalWorkload, Converter={StaticResource ShortTimeConverter}}"/>
 
       </StackPanel>
 
