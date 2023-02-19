@@ -24,7 +24,7 @@ internal class WorkModel : ModelBase
             Id = work.Id,
             Name = work.Name,
             Workload = work.Workload,
-            IsActive = work.WorkloadTimer != null,
+            IsActive = work.IsActive,
             startRecording = work.WorkloadTimer?.StartRecordingDateTime
         };
     }

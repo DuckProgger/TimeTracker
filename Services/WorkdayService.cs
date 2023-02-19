@@ -56,26 +56,24 @@ public class WorkdayService
         return await workRepository.EditAsync(work);
     }
 
-    public async Task<Work> StartRecording(int workId)
+    public async Task StartRecording(DateOnly workdayDate, int workId)
     {
-        var work = await workRepository.Items
-            .Include(w => w.WorkloadTimer)
-            .FirstOrDefaultAsync(w => w.Id == workId);
-        if (work == null)
-            throw new Exception($"Work with Id = {workId} not found.");
-        work.StartRecording();
-        return await workRepository.EditAsync(work);
+        var workday = await GetWorkdayQueryable(workdayDate)
+            .FirstOrDefaultAsync();
+        if (workday == null)
+            throw new Exception($"No work for {workdayDate}.");
+        workday.StartRecording(workId);
+        await workdayRepository.EditAsync(workday);
     }
 
-    public async Task<Work> StopRecording(int workId)
+    public async Task StopRecording(DateOnly workdayDate, int workId)
     {
-        var work = await workRepository.Items
-            .Include(w => w.WorkloadTimer)
-            .FirstOrDefaultAsync(w => w.Id == workId);
-        if (work == null)
-            throw new Exception($"Work with Id = {workId} not found.");
-        work.StopRecording();
-        return await workRepository.EditAsync(work);
+        var workday = await GetWorkdayQueryable(workdayDate)
+            .FirstOrDefaultAsync();
+        if (workday == null)
+            throw new Exception($"No work for {workdayDate}.");
+        workday.StopRecording(workId);
+        await workdayRepository.EditAsync(workday);
     }
 
     public async Task RemoveWork(int workId)

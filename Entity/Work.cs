@@ -12,6 +12,8 @@ public class Work : NamedEntity
     public Workday Workday { get; private set; }
     public int WorkdayId { get; private set; }
 
+    public bool IsActive => WorkloadTimer != null;
+
     public WorkloadTimer? WorkloadTimer { get; private set; }
 
     public Work(string name)
@@ -36,14 +38,18 @@ public class Work : NamedEntity
 
     public void StartRecording()
     {
+        if (IsActive)
+            throw new Exception($"Work with Id = {Id} already active.");
+
         WorkloadTimer = new();
         WorkloadTimer.StartRecording(Id);
     }
 
     public void StopRecording()
     {
-        if (WorkloadTimer == null)
+        if (!IsActive)
             throw new Exception($"Work with Id = {Id} is not active.");
+
         var elapsedTime = WorkloadTimer.GetElapsedTime();
         AddWorkload(elapsedTime);
         WorkloadTimer = null;

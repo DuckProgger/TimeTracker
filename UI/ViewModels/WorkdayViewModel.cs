@@ -140,7 +140,7 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
     {
         try
         {
-            await workdayService.StartRecording(SelectedWork.Id);
+            await workdayService.StartRecording(SelectedDate, SelectedWork.Id);
             await RefreshWorkCollection();
             StartCollectionRefreshTimer();
         }
@@ -164,7 +164,7 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
     {
         try
         {
-            await workdayService.StopRecording(SelectedWork.Id);
+            await workdayService.StopRecording(SelectedDate, SelectedWork.Id);
             await RefreshWorkCollection();
             StopCollectionRefreshTimer();
         }
