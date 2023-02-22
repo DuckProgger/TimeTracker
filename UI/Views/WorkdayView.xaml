@@ -45,9 +45,18 @@
         </Grid>
       </StackPanel>
     </materialDesign:DialogHost.DialogContent>
-    <StackPanel>
 
-      <Grid>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+
+      <!--Новая работа и выбор даты-->
+      <Grid Grid.Row="0">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="0.2*"/>
@@ -63,15 +72,20 @@
           <DatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay, Converter={StaticResource DateConverter}}" Margin="5"/>
         </StackPanel>
       </Grid>
-      <Button Content="Добавить" Command="{Binding AddWorkCommand}"/>
-      <DataGrid ItemsSource="{Binding CurrentWorkday.Works, UpdateSourceTrigger=PropertyChanged}" 
+
+      <!--Кнопка добавления новой работы-->
+      <Button Grid.Row="1" Content="Добавить" Command="{Binding AddWorkCommand}"/>
+
+      <!--Список работ-->
+      <DataGrid Grid.Row="2"
+                ItemsSource="{Binding CurrentWorkday.Works, UpdateSourceTrigger=PropertyChanged}" 
                 SelectedItem="{Binding SelectedWork, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False">
         <DataGrid.InputBindings>
-        <MouseBinding MouseAction="LeftDoubleClick"
+          <MouseBinding MouseAction="LeftDoubleClick"
                                   Command="{Binding EditWorkCommand}"/>
-      </DataGrid.InputBindings>
+        </DataGrid.InputBindings>
         <DataGrid.Columns>
           <DataGridTextColumn Header="Название" Binding="{Binding Name}" IsReadOnly="True" />
           <DataGridTextColumn Header="Трудозатраты" Binding="{Binding Workload, Converter={StaticResource ShortTimeConverter}}" IsReadOnly="True"/>
@@ -117,15 +131,16 @@
         </DataGrid.Columns>
       </DataGrid>
 
-      <StackPanel Orientation="Horizontal">
+      <!--Всего трудозатрат-->
+      <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 0, 10, 0">
         <TextBlock Text="Всего: "/>
         <TextBlock Text="{Binding CurrentWorkday.TotalWorkload, Converter={StaticResource ShortTimeConverter}}"/>
-
       </StackPanel>
 
       <!--Уведомления-->
-      <ListBox Template="{StaticResource NotifierTemplate}"/>
-    </StackPanel>
+      <ListBox Grid.Row="4" DockPanel.Dock="Bottom" Template="{StaticResource NotifierTemplate}"/>
+    </Grid>
+
   </materialDesign:DialogHost>
 
 </UserControl>

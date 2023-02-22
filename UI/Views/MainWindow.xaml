@@ -10,6 +10,7 @@
         xmlns:viewModels="clr-namespace:UI.ViewModels"
         mc:Ignorable="d"
         Title="TimeTracker" Height="450" Width="800"
+        MinHeight="300" MinWidth="500"
         WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
         Background="{StaticResource MaterialDesignDarkBackground}">
