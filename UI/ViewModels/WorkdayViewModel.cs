@@ -2,7 +2,6 @@
 using Prism.Services.Dialogs;
 using Services;
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,6 +46,11 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
     {
         var workday = await workdayService.GetByDate(SelectedDate);
         CurrentWorkday = workday != null ? WorkdayModel.Map(workday) : new WorkdayModel();
+        var activeWorkExist = CurrentWorkday.Works.Any(w => w.IsActive);
+        if (activeWorkExist)
+            StartCollectionRefreshTimer();
+        else
+            StopCollectionRefreshTimer();
     }
 
     private void StartCollectionRefreshTimer()
@@ -135,7 +139,6 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
         {
             await workdayService.StartRecording(SelectedDate, SelectedWork.Id);
             await RefreshWorkCollection();
-            StartCollectionRefreshTimer();
         }
         catch (Exception e)
         {
@@ -159,7 +162,6 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
         {
             await workdayService.StopRecording(SelectedDate, SelectedWork.Id);
             await RefreshWorkCollection();
-            StopCollectionRefreshTimer();
         }
         catch (Exception e)
         {
