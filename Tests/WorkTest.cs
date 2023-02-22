@@ -76,7 +76,7 @@ public class WorkTest
     }
 
     [Fact]
-    public void Work_is_not_active_before_created()
+    public void Work_is_not_active_after_created()
     {
         var work = CreateWork();
 

@@ -1,7 +1,9 @@
-﻿using Database;
+﻿using System.Diagnostics;
+using Database;
 using Entity;
 using Entity.Base;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Services;
 
 namespace Tests;
@@ -12,6 +14,7 @@ internal class TestApplicationContextHelper
     {
         return new ApplicationContext(
              new DbContextOptionsBuilder<ApplicationContext>()
+                 //.LogTo(s => Debug.WriteLine(s), LogLevel.Information)
                  .UseSqlite("Data Source=.\\testDb.db3").Options);
     }
 

@@ -26,6 +26,9 @@ public class Work : NamedEntity
 
     public void ChangeName(string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new Exception("Work name can't be null or empty.");
+
         Name = name;
     }
 
