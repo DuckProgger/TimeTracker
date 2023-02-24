@@ -94,6 +94,7 @@ public class WorkdayService
     private IQueryable<Workday> GetWorkdayQueryable(DateOnly workdayDate)
     {
         return workdayRepository.Items
+            .AsNoTracking()
             .Include(wd => wd.Works)
             .ThenInclude(w => w.WorkloadTimer)
             .Where(wd => wd.Date == workdayDate);

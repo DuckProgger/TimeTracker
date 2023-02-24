@@ -16,19 +16,17 @@ namespace UI.ViewModels;
 
 internal class WorkdayViewModel : ViewModelBase<WorkModel>
 {
-    private readonly WorkdayService workdayService;
     private readonly IDialogService dialogService;
     private Timer? collectionRefresher;
 
-    public WorkdayViewModel(WorkdayService workdayService, IDialogService dialogService)
+    public WorkdayViewModel(IDialogService dialogService)
     {
-        this.workdayService = workdayService;
         this.dialogService = dialogService;
     }
 
-    public string NewWorkName { get; set; }
+    public string? NewWorkName { get; set; }
 
-    public WorkdayModel CurrentWorkday { get; set; }
+    public WorkdayModel? CurrentWorkday { get; set; }
 
     public DateOnly SelectedDate
     {
@@ -40,11 +38,13 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
         }
     }
 
-    public WorkModel SelectedWork { get; set; }
+    public WorkModel? SelectedWork { get; set; }
+
+    private static WorkdayService WorkdayServiceInstance => ServiceLocator.GetService<WorkdayService>();
 
     private async Task RefreshWorkCollection()
     {
-        var workday = await workdayService.GetByDate(SelectedDate);
+        var workday = await WorkdayServiceInstance.GetByDate(SelectedDate);
         CurrentWorkday = workday != null ? WorkdayModel.Map(workday) : new WorkdayModel();
         var activeWorkExist = CurrentWorkday.Works.Any(w => w.IsActive);
         if (activeWorkExist)
@@ -92,7 +92,7 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
     {
         try
         {
-            var createdWork = await workdayService.AddWork(SelectedDate, NewWorkName);
+            var createdWork = await WorkdayServiceInstance.AddWork(SelectedDate, NewWorkName);
             CurrentWorkday.Works.Add(WorkModel.Map(createdWork));
             NewWorkName = string.Empty;
         }
@@ -119,7 +119,7 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
         if (dialogResult.Result != ButtonResult.OK) return;
 
         dialogResult.Parameters.TryGetValue<TimeSpan>(workloadParameterName, out var workload);
-        await workdayService.AddWorkload(SelectedWork.Id, workload);
+        await WorkdayServiceInstance.AddWorkload(SelectedWork.Id, workload);
         await RefreshWorkCollection();
     }
 
@@ -137,7 +137,7 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
     {
         try
         {
-            await workdayService.StartRecording(SelectedDate, SelectedWork.Id);
+            await WorkdayServiceInstance.StartRecording(SelectedDate, SelectedWork.Id);
             await RefreshWorkCollection();
         }
         catch (Exception e)
@@ -160,7 +160,7 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
     {
         try
         {
-            await workdayService.StopRecording(SelectedDate, SelectedWork.Id);
+            await WorkdayServiceInstance.StopRecording(SelectedDate, SelectedWork.Id);
             await RefreshWorkCollection();
         }
         catch (Exception e)
@@ -187,7 +187,7 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
         if (dialogResult.Result != ButtonResult.OK) return;
 
         dialogResult.Parameters.TryGetValue<WorkModel>(workParameterName, out var work);
-        await workdayService.EditWork(work.Id, work.Name, work.Workload);
+        await WorkdayServiceInstance.EditWork(work.Id, work.Name, work.Workload);
         await RefreshWorkCollection();
     }
 
@@ -203,7 +203,7 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
 
     private async void OnDeleteWorkCommandExecuted()
     {
-        await workdayService.RemoveWork(SelectedWork.Id);
+        await WorkdayServiceInstance.RemoveWork(SelectedWork.Id);
         MDDialogHost.CloseDialogCommand.Execute(null, null);
         await RefreshWorkCollection();
     }

@@ -20,6 +20,8 @@ public partial class App
         containerRegistry
             .AddDatabase()
             .AddDialogs()
+            .Register<ScreenshotService>()
+            .Register<WorkdayService>()
             ;
     }
 

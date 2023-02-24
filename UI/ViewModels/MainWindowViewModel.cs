@@ -16,11 +16,10 @@ internal class MainWindowViewModel : ViewModelBase
 
     #region Command NavigateToOtherView - Команда переключиться на другое представление
 
-    private ICommand _NavigateToOtherViewCommand;
+    private ICommand? _NavigateToOtherViewCommand;
     /// <summary>Команда - переключиться на другое представление</summary>
     public ICommand NavigateToOtherViewCommand => _NavigateToOtherViewCommand
-        ??= new DelegateCommand<string>(OnNavigateToOtherViewCommandExecuted, CanNavigateToOtherViewCommandExecute);
-    private bool CanNavigateToOtherViewCommandExecute(string viewName) => true;
+        ??= new DelegateCommand<string>(OnNavigateToOtherViewCommandExecuted);
     private void OnNavigateToOtherViewCommandExecuted(string viewName) =>
         regionManager.RequestNavigate(RegionNames.Main, viewName);
 

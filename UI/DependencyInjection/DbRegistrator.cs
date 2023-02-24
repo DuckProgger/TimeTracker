@@ -10,6 +10,6 @@ namespace UI.DependencyInjection;
 internal static class DbRegistrator
 {
     public static IContainerRegistry AddDatabase(this IContainerRegistry container) => container
-        .RegisterScoped<ApplicationContext>(ApplicationContextFactory.CreateDbContext)
-        .RegisterScoped(typeof(IRepository<>), typeof(DbRepository<>));
+        .Register<ApplicationContext>(ApplicationContextFactory.CreateDbContext)
+        .Register(typeof(IRepository<>), typeof(DbRepository<>));
 }

@@ -4,15 +4,16 @@ using UI.Infrastructure;
 
 namespace UI.Model;
 
-internal class ScreenshotModel
+internal class ScreenshotModel : ModelBase
 {
-    public ScreenshotModel(byte[] imageBytes, DateTime created)
+    public ScreenshotModel(byte[]? imageBytes, DateTime created)
     {
-        Screenshot = ScreenshotHelper.CreateBitmapImage(imageBytes);
+        if (imageBytes != null)
+            Screenshot = ScreenshotHelper.CreateBitmapImage(imageBytes);
         Created = created;
     }
 
-    public ImageSource Screenshot { get; }
+    public ImageSource? Screenshot { get; internal set; }
 
-    public DateTime Created { get; set; }
+    public DateTime Created { get; internal set; }
 }
