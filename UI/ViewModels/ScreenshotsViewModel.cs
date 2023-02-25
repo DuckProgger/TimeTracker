@@ -18,6 +18,7 @@ namespace UI.ViewModels;
 internal class ScreenshotsViewModel : ViewModelBase<ScreenshotModel>
 {
     private readonly DialogService dialogService;
+    private DateOnly selectedDate;
 
     public ScreenshotsViewModel(DialogService dialogService)
     {
@@ -27,6 +28,37 @@ internal class ScreenshotsViewModel : ViewModelBase<ScreenshotModel>
     public ScreenshotModel? SelectedScreenshot { get; set; }
 
     private static ScreenshotService ScreenshotServiceInstance => ServiceLocator.GetService<ScreenshotService>();
+
+    public DateOnly SelectedDate
+    {
+        get => selectedDate;
+        set
+        {
+            selectedDate = value;
+            GetScreenshotsCommand.Execute(null);
+        }
+    }
+
+    #region Command InitData - Команда Команда инициализировать данные на форме
+
+    private ICommand? _InitDataCommand;
+
+    /// <summary>Команда - Команда инициализировать данные на форме</summary>
+    public ICommand InitDataCommand => _InitDataCommand
+        ??= new DelegateCommand(OnInitDataCommandExecuted);
+
+    private void OnInitDataCommandExecuted()
+    {
+        var today = DateTimeUtils.Today();
+        // Так как при смене View коллекция Collection очищается,
+        // а сеттер SelectedDate не будет вызван, если значение не изменилось,
+        // то нужно принудительно вызвать команду получения скриншотов при неизменном значении SelectedDate 
+        if(SelectedDate == today)
+            GetScreenshotsCommand.Execute(null);
+        SelectedDate = today;
+    }
+
+    #endregion
 
     #region Command GetScreenshots - Команда получить список скриншотов
 
@@ -38,8 +70,7 @@ internal class ScreenshotsViewModel : ViewModelBase<ScreenshotModel>
 
     private async void OnGetScreenshotsCommandExecuted()
     {
-        var today = DateTimeUtils.Today();
-        var screenshotsCount = await ScreenshotServiceInstance.GetScreensotsCountByDay(today);
+        var screenshotsCount = await ScreenshotServiceInstance.GetScreensotsCountByDay(SelectedDate);
 
         // Заполнить список скриншотов предварительными данными, пока они не загрузились
         var screenshotData = new List<ScreenshotModel>(screenshotsCount);
@@ -51,14 +82,14 @@ internal class ScreenshotsViewModel : ViewModelBase<ScreenshotModel>
         // Параллельно загрузить список скриншотов
         const int bunchSize = 5;
         var bunchCount = screenshotsCount / bunchSize + 1;
-        await Task.Run(() => 
-            Parallel.For(0, bunchCount, async (bunchIndex, _) => 
-                await FillScreenshotBunch(today, bunchSize * bunchIndex, bunchSize, screenshotData)));
+        await Task.Run(() =>
+            Parallel.For(0, bunchCount, async (bunchIndex, _) =>
+                await FillScreenshotBunch(SelectedDate, bunchSize * bunchIndex, bunchSize, screenshotData)));
     }
 
-    private static async Task FillScreenshotBunch(DateOnly today, int skip, int take, List<ScreenshotModel> screenshotData)
+    private static async Task FillScreenshotBunch(DateOnly date, int skip, int take, List<ScreenshotModel> screenshotData)
     {
-        var screenshotBunch = await ScreenshotServiceInstance.GetScreenshotBunchByDay(today, skip, take);
+        var screenshotBunch = await ScreenshotServiceInstance.GetScreenshotBunchByDay(date, skip, take);
         var screenshotBunchList = screenshotBunch.ToList();
         var screenshotBunchCount = screenshotBunchList.Count();
         var screenshotDataIndex = skip;
@@ -102,6 +133,9 @@ internal class ScreenshotsViewModel : ViewModelBase<ScreenshotModel>
     public override void OnNavigatedFrom(NavigationContext navigationContext)
     {
         base.OnNavigatedFrom(navigationContext);
+        // Изображения в WPF съедают невероятно много оперативки,
+        // поэтому лучше очистить коллекцию и принудительно запустить сборщик мусора
         Collection.Clear();
+        GC.Collect();
     }
 }

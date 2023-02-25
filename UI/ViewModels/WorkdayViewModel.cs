@@ -18,6 +18,7 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
 {
     private readonly IDialogService dialogService;
     private Timer? collectionRefresher;
+    private DateOnly selectedDate;
 
     public WorkdayViewModel(IDialogService dialogService)
     {
@@ -82,7 +83,6 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
     #region Command AddWork - Команда добавить новую работу
 
     private ICommand? _AddWorkCommand;
-    private DateOnly selectedDate;
 
     /// <summary>Команда - добавить новую работу</summary>
     public ICommand AddWorkCommand => _AddWorkCommand

@@ -7,21 +7,38 @@
              xmlns:viewModels="clr-namespace:UI.ViewModels"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:templates="clr-namespace:UI.Templates"
+             xmlns:converters="clr-namespace:UI.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              d:DataContext="{d:DesignInstance viewModels:ScreenshotsViewModel}"
              Background="{StaticResource MaterialDesignDarkBackground}">
+  <UserControl.Resources>
+    <converters:DateConverter x:Key="DateConverter"/>
+    <converters:TimeConverter x:Key="TimeConverter"/>
+  </UserControl.Resources>
+
   <b:Interaction.Triggers>
     <b:EventTrigger EventName="Loaded">
-      <b:InvokeCommandAction Command="{Binding GetScreenshotsCommand}"/>
+      <b:InvokeCommandAction Command="{Binding InitDataCommand}"/>
     </b:EventTrigger>
   </b:Interaction.Triggers>
   <Grid>
-    <DataGrid ItemsSource="{Binding Collection, UpdateSourceTrigger=PropertyChanged}" 
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <StackPanel Grid.Row="0" Orientation="Horizontal">
+      <TextBlock Text="Дата рабочего дня: " VerticalAlignment="Center"/>
+      <DatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay, Converter={StaticResource DateConverter}}" />
+    </StackPanel>
+
+    <DataGrid Grid.Row="1"
+              ItemsSource="{Binding Collection, UpdateSourceTrigger=PropertyChanged}" 
               SelectedItem="{Binding SelectedScreenshot, UpdateSourceTrigger=PropertyChanged}"
-                AutoGenerateColumns="False"
-                CanUserAddRows="False">
+              AutoGenerateColumns="False"
+              CanUserAddRows="False"
+              HeadersVisibility="None">
       <DataGrid.InputBindings>
         <MouseBinding MouseAction="LeftDoubleClick"
                       Command="{Binding ShowScreenshotCommand}"/>
@@ -31,13 +48,12 @@
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate>
               <StackPanel Orientation="Horizontal">
-                <Image Source="{Binding Screenshot}" Width="150" Height="150" Style="{StaticResource ImageHighResStyle}"/>
-                <TextBlock Text="{Binding Created}" Margin="35"/>
+                <Image Source="{Binding Screenshot}" Width="150" Height="100" Style="{StaticResource ImageHighResStyle}"/>
+                <TextBlock Text="{Binding Created, Converter={StaticResource TimeConverter}}" Margin="35"/>
               </StackPanel>
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <!--<DataGridTextColumn Header="Дата/время" Binding="{Binding Created}" Width="*" />-->
       </DataGrid.Columns>
     </DataGrid>
   </Grid>
