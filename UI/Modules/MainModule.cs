@@ -17,6 +17,7 @@ internal class MainModule : IModule
         regionManager
              .RegisterViewWithRegion(RegionNames.Main, typeof(WorkdayView))
              .RegisterViewWithRegion(RegionNames.Main, typeof(ScreenshotsView))
+             .RegisterViewWithRegion(RegionNames.Main, typeof(SettingsView))
         ;
 
     }
@@ -24,5 +25,6 @@ internal class MainModule : IModule
     {
         containerRegistry.RegisterForNavigation<WorkdayView>();
         containerRegistry.RegisterForNavigation<ScreenshotsView>();
+        containerRegistry.RegisterForNavigation<SettingsView>();
     }
 }

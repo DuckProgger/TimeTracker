@@ -22,19 +22,37 @@ public class ScreenshotService
             .CountAsync();
     }
 
+    public async Task RemoveScreenshotsByDay(DateOnly date)
+    {
+        var screenshots = await GetScreenshotsByDayQuery(date)
+            .ToListAsync();
+        foreach (var screenshot in screenshots)
+            await screenshotRepository.RemoveAsync(screenshot);
+    }
+
     public async Task<IEnumerable<Screenshot>> GetScreenshotBunchByDay(DateOnly date, int skip, int take)
     {
         return await GetScreenshotsByDayQuery(date)
+            .AsNoTracking()
             .Skip(skip)
             .Take(take)
             .ToListAsync()
             .ConfigureAwait(false);
     }
 
+    public async Task<IEnumerable<DateOnly>> GetAllScreenshotDates()
+    {
+        return await screenshotRepository.Items
+            .Select(s => s.Created)
+            .GroupBy(s => new { s.Year, s.Month, s.Day })
+            .Select(g => new DateOnly(g.Key.Year, g.Key.Month, g.Key.Day))
+            .ToListAsync();
+    }
+
+
     private IQueryable<Screenshot> GetScreenshotsByDayQuery(DateOnly date)
     {
         return screenshotRepository.Items
-                .AsNoTracking()
                 .Where(s => s.Created.Year == date.Year &&
                             s.Created.Month == date.Month &&
                             s.Created.Day == date.Day);

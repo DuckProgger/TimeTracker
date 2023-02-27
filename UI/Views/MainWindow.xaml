@@ -37,6 +37,9 @@
         <MenuItem Header="Скриншоты" 
                   Command="{Binding NavigateToOtherViewCommand}"
                   CommandParameter="{x:Static const:ViewNames.ScreenshotsViewName}"/>
+        <MenuItem Header="Настройки" 
+                  Command="{Binding NavigateToOtherViewCommand}"
+                  CommandParameter="{x:Static const:ViewNames.SettingsViewName}"/>
       </Menu>
       
     </Grid>

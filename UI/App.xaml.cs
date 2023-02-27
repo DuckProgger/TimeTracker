@@ -4,7 +4,9 @@ using Prism.Ioc;
 using Prism.Modularity;
 using Services;
 using System;
+using System.ComponentModel;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Windows;
 using UI.DependencyInjection;
 using UI.Infrastructure;
@@ -47,19 +49,37 @@ public partial class App
 
         var context = ServiceLocator.GetService<ApplicationContext>();
         context.Database.Migrate();
-
-        var screenshotService = ServiceLocator.GetService<ScreenshotService>();
-        RunSaveScreenshotBackgroundWorker(screenshotService);
+        ClearOutdatedScreenshots();
+        RunSaveScreenshotBackgroundWorker();
     }
 
-    internal static void RunSaveScreenshotBackgroundWorker(ScreenshotService screenshotService)
+    internal static void RunSaveScreenshotBackgroundWorker()
     {
         var worker = new RepeatableBackgroundWorker(TimeSpan.Zero, TimeSpan.FromMinutes(15));
         worker.DoWork += async (s, e) =>
         {
             var imageBytes = ScreenshotHelper.CreateScreenshot(ImageFormat.Png);
+            var screenshotService = ServiceLocator.GetService<ScreenshotService>();
             await screenshotService.SaveScreenshot(imageBytes, DateTime.Now);
         };
         worker.RunWorkerAsync();
     }
+
+    internal static async void ClearOutdatedScreenshots()
+    {
+        var settings = await SettingsService.Read();
+        var screenshotsLifetimeFromDays = settings.ScreenshotsLifetimeFromDays;
+        var dateOfOutdatedScreenshots = DateTime.Now - TimeSpan.FromDays(screenshotsLifetimeFromDays);
+        var screenshotService = ServiceLocator.GetService<ScreenshotService>();
+        var screenshotDates = await screenshotService.GetAllScreenshotDates();
+        var outdatedScreenshotsDates = screenshotDates
+            .Where(s => s.Year <= dateOfOutdatedScreenshots.Year &&
+                        s.Month <= dateOfOutdatedScreenshots.Month &&
+                        s.Day <= dateOfOutdatedScreenshots.Day);
+        foreach (var outdatedScreenshotDate in outdatedScreenshotsDates)
+            await screenshotService.RemoveScreenshotsByDay(outdatedScreenshotDate);
+    }
+
+
+
 }

@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace UI.Model;
 
-internal class ModelBase : INotifyPropertyChanged
+internal abstract class ModelBase : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 
