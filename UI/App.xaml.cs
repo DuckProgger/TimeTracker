@@ -11,6 +11,7 @@ using System.Windows;
 using UI.DependencyInjection;
 using UI.Infrastructure;
 using UI.Modules;
+using UI.Services;
 using UI.Views;
 
 namespace UI;
@@ -58,6 +59,7 @@ public partial class App
         var worker = new RepeatableBackgroundWorker(TimeSpan.Zero, TimeSpan.FromMinutes(15));
         worker.DoWork += async (s, e) =>
         {
+            if (!IsWorkTime(DateTime.Now)) return;
             var imageBytes = ScreenshotHelper.CreateScreenshot(ImageFormat.Png);
             var screenshotService = ServiceLocator.GetService<ScreenshotService>();
             await screenshotService.SaveScreenshot(imageBytes, DateTime.Now);
@@ -65,9 +67,9 @@ public partial class App
         worker.RunWorkerAsync();
     }
 
-    internal static async void ClearOutdatedScreenshots()
+    private static async void ClearOutdatedScreenshots()
     {
-        var settings = await SettingsService.Read();
+        var settings = SettingsService.Read();
         var screenshotsLifetimeFromDays = settings.ScreenshotsLifetimeFromDays;
         var dateOfOutdatedScreenshots = DateTime.Now - TimeSpan.FromDays(screenshotsLifetimeFromDays);
         var screenshotService = ServiceLocator.GetService<ScreenshotService>();
@@ -80,6 +82,19 @@ public partial class App
             await screenshotService.RemoveScreenshotsByDay(outdatedScreenshotDate);
     }
 
+    private static bool IsWorkTime(DateTime dateTime)
+    {
+        var settings = SettingsService.Read();
+        var currentDayOfWeek = dateTime.DayOfWeek;
+        var isWorkDay = settings.WorkDays.Contains(currentDayOfWeek);
+        if(!isWorkDay) return false;
 
+        var currentTime = dateTime.TimeOfDay;
+        var isWorkTime = currentTime >= settings.WorkTimeBegin &&
+                         currentTime <= settings.WorkTimeEnd;
+        if(!isWorkTime) return false;
+
+        return true;
+    }
 
 }

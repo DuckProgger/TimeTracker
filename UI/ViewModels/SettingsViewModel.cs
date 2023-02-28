@@ -1,18 +1,98 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Prism.Commands;
+using System;
 using System.Windows.Input;
-using Prism.Commands;
-using UI.Infrastructure;
 using UI.Model;
+using UI.Services;
 
 namespace UI.ViewModels;
 
 internal class SettingsViewModel : ViewModelBase
 {
     public Settings Settings { get; set; }
+
+    public bool IsMondaySelected
+    {
+        get => Settings?.WorkDays?.Contains(DayOfWeek.Monday) ?? false;
+        set
+        {
+            if (value)
+                Settings.WorkDays.Add(DayOfWeek.Monday);
+            else
+                Settings.WorkDays.Remove(DayOfWeek.Monday);
+        }
+    }
+
+    public bool IsTuesdaySelected
+    {
+        get => Settings?.WorkDays?.Contains(DayOfWeek.Tuesday) ?? false;
+        set
+        {
+            if (value)
+                Settings.WorkDays.Add(DayOfWeek.Tuesday);
+            else
+                Settings.WorkDays.Remove(DayOfWeek.Tuesday);
+        }
+    }
+
+    public bool IsWednesdaySelected
+    {
+        get => Settings?.WorkDays?.Contains(DayOfWeek.Wednesday) ?? false;
+        set
+        {
+            if (value)
+                Settings.WorkDays.Add(DayOfWeek.Wednesday);
+            else
+                Settings.WorkDays.Remove(DayOfWeek.Wednesday);
+        }
+    }
+
+    public bool IsThursdaySelected
+    {
+        get => Settings?.WorkDays?.Contains(DayOfWeek.Thursday) ?? false;
+        set
+        {
+            if (value)
+                Settings.WorkDays.Add(DayOfWeek.Thursday);
+            else
+                Settings.WorkDays.Remove(DayOfWeek.Thursday);
+        }
+    }
+
+    public bool IsFridaySelected
+    {
+        get => Settings?.WorkDays?.Contains(DayOfWeek.Friday) ?? false;
+        set
+        {
+            if (value)
+                Settings.WorkDays.Add(DayOfWeek.Friday);
+            else
+                Settings.WorkDays.Remove(DayOfWeek.Friday);
+        }
+    }
+
+    public bool IsSaturdaySelected
+    {
+        get => Settings?.WorkDays?.Contains(DayOfWeek.Saturday) ?? false;
+        set
+        {
+            if (value)
+                Settings.WorkDays.Add(DayOfWeek.Saturday);
+            else
+                Settings.WorkDays.Remove(DayOfWeek.Saturday);
+        }
+    }
+
+    public bool IsSundaySelected
+    {
+        get => Settings?.WorkDays?.Contains(DayOfWeek.Sunday) ?? false;
+        set
+        {
+            if (value)
+                Settings.WorkDays.Add(DayOfWeek.Sunday);
+            else
+                Settings.WorkDays.Remove(DayOfWeek.Sunday);
+        }
+    }
 
     #region Command InitData - Команда Команда инициализировать данные на форме
 
@@ -22,9 +102,9 @@ internal class SettingsViewModel : ViewModelBase
     public ICommand InitDataCommand => _InitDataCommand
         ??= new DelegateCommand(OnInitDataCommandExecuted);
 
-    private async void OnInitDataCommandExecuted()
+    private void OnInitDataCommandExecuted()
     {
-        Settings = await SettingsService.Read();
+        Settings = SettingsService.Read();
     }
 
     #endregion
@@ -37,9 +117,9 @@ internal class SettingsViewModel : ViewModelBase
     public ICommand SaveCommand => _SaveCommand
         ??= new DelegateCommand(OnSaveCommandExecuted);
 
-    private async void OnSaveCommandExecuted()
+    private void OnSaveCommandExecuted()
     {
-        await SettingsService.Save(Settings);
+        SettingsService.Save(Settings);
     }
 
     #endregion

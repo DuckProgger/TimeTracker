@@ -6,11 +6,16 @@
              xmlns:local="clr-namespace:UI.Views"
              xmlns:viewModels="clr-namespace:UI.ViewModels"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:converters="clr-namespace:UI.Converters"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:SettingsViewModel}"
              d:DesignHeight="450" d:DesignWidth="800"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{StaticResource MaterialDesignDarkBackground}">
+  <UserControl.Resources>
+    <converters:TimeConverter x:Key="TimeConverter"/>
+  </UserControl.Resources>
+
   <b:Interaction.Triggers>
     <b:EventTrigger EventName="Loaded">
       <b:InvokeCommandAction Command="{Binding InitDataCommand}"/>
@@ -21,13 +26,48 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
       <TextBlock Text="Время хранения скриншотов, дней"/>
       <TextBox Text="{Binding Settings.ScreenshotsLifetimeFromDays}" Style="{StaticResource MaterialDesignOutlinedTextBox}" Padding="0" Width="50"/>
     </StackPanel>
 
-    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+
+      <GroupBox Grid.Column="0" Header="Рабочие дни">
+        <StackPanel>
+          <CheckBox Content="Понедельник" IsChecked="{Binding IsMondaySelected, Mode=TwoWay}"/>
+          <CheckBox Content="Вторник" IsChecked="{Binding IsTuesdaySelected, Mode=TwoWay}"/>
+          <CheckBox Content="Среда" IsChecked="{Binding IsWednesdaySelected, Mode=TwoWay}"/>
+          <CheckBox Content="Четверг" IsChecked="{Binding IsThursdaySelected, Mode=TwoWay}"/>
+          <CheckBox Content="Пятница" IsChecked="{Binding IsFridaySelected, Mode=TwoWay}"/>
+          <CheckBox Content="Суббота" IsChecked="{Binding IsSaturdaySelected, Mode=TwoWay}"/>
+          <CheckBox Content="Воскресенье" IsChecked="{Binding IsSundaySelected, Mode=TwoWay}"/>
+        </StackPanel>
+      </GroupBox>
+      <GroupBox Grid.Column="1" Header="Рабочее время">
+        <StackPanel>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Начало рабочего дня: "/>
+            <TextBox Text="{Binding Settings.WorkTimeBegin, Converter={StaticResource TimeConverter}}"
+                     Style="{StaticResource MaterialDesignOutlinedTextBox}" Padding="0" Width="50"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Конец рабочего дня: "/>
+            <TextBox Text="{Binding Settings.WorkTimeEnd, Converter={StaticResource TimeConverter}}"
+                     Style="{StaticResource MaterialDesignOutlinedTextBox}" Padding="0" Width="50"/>
+          </StackPanel>
+        </StackPanel>
+      </GroupBox>
+
+    </Grid>
+
+    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
       <Button Content="Отменить" Command="{Binding CancelCommand}"/>
       <Button Content="Сохранить" Command="{Binding SaveCommand}"/>
     </StackPanel>
