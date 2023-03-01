@@ -5,7 +5,8 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon Condition="">icon.ico</ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+	<AssemblyName>Time Tracker</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
