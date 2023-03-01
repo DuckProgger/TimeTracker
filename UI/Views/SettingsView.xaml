@@ -27,13 +27,18 @@
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
-      <TextBlock Text="Время хранения скриншотов, дней"/>
+      <TextBlock Text="Время хранения скриншотов, дней "/>
       <TextBox Text="{Binding Settings.ScreenshotsLifetimeFromDays}" Style="{StaticResource MaterialDesignOutlinedTextBox}" Padding="0" Width="50"/>
     </StackPanel>
+    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
+      <TextBlock Text="Периодичность сохранения скриншотов, мин "/>
+      <TextBox Text="{Binding Settings.ScreenshotCreationPeriodFromMinutes}" Style="{StaticResource MaterialDesignOutlinedTextBox}" Padding="0" Width="50"/>
+    </StackPanel>
 
-    <Grid Grid.Row="1">
+    <Grid Grid.Row="2">
       <Grid.ColumnDefinitions>
         <ColumnDefinition/>
         <ColumnDefinition/>
@@ -67,7 +72,7 @@
 
     </Grid>
 
-    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
       <Button Content="Отменить" Command="{Binding CancelCommand}"/>
       <Button Content="Сохранить" Command="{Binding SaveCommand}"/>
     </StackPanel>

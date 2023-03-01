@@ -7,6 +7,8 @@ internal class Settings : ModelBase
 {
     public int ScreenshotsLifetimeFromDays { get; set; } = 7;
 
+    public int ScreenshotCreationPeriodFromMinutes { get; set; } = 15;
+
     public List<DayOfWeek> WorkDays { get; set; } = new List<DayOfWeek>()
     {
         DayOfWeek.Monday,

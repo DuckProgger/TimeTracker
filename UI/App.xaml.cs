@@ -56,7 +56,12 @@ public partial class App
 
     internal static void RunSaveScreenshotBackgroundWorker()
     {
-        var worker = new RepeatableBackgroundWorker(TimeSpan.Zero, TimeSpan.FromMinutes(15));
+        var settings = SettingsService.Read();
+        var screenshotCreationPeriod = settings.ScreenshotCreationPeriodFromMinutes;
+        var nowMinute = DateTime.Now.Minute;
+        // Запускать воркера только во время, кратное настройке ScreenshotCreationPeriodFromMinutes
+        var startWorkerOffset = screenshotCreationPeriod - nowMinute % screenshotCreationPeriod;
+        var worker = new RepeatableBackgroundWorker(TimeSpan.FromMinutes(startWorkerOffset), TimeSpan.FromMinutes(screenshotCreationPeriod));
         worker.DoWork += async (s, e) =>
         {
             if (!IsWorkTime(DateTime.Now)) return;
