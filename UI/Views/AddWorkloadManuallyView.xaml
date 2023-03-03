@@ -3,30 +3,38 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:UI.Views"
              xmlns:mvvm="http://prismlibrary.com/"
              xmlns:viewModels="clr-namespace:UI.ViewModels"
-             xmlns:converters="clr-namespace:UI.Converters"
+             xmlns:templates="clr-namespace:UI.Templates"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              d:DataContext="{d:DesignInstance viewModels:AddWorkloadManuallyViewModel}"
              Background="{StaticResource MaterialDesignDarkBackground}"
              Height="90" Width="200">
-  <UserControl.Resources>
-    <converters:TimeConverter x:Key="TimeConverter"/>
-  </UserControl.Resources>
   <mvvm:Dialog.WindowStyle>
     <Style BasedOn="{StaticResource DialogStyle}" TargetType="Window"/>
   </mvvm:Dialog.WindowStyle>
   <DockPanel>
-    <TextBox DockPanel.Dock="Top"
-             Text="{Binding ProccessedWorkload, Converter={StaticResource TimeConverter}}"
-             materialDesign:HintAssist.Hint="Трудозатраты"
-             FontSize="16"
-             Margin="10"
-             Padding="5"
-             Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+    <templates:TimePicker x:Name="Workload"
+                          DockPanel.Dock="Top"
+                          materialDesign:HintAssist.Hint="Трудозатраты"
+                          FontSize="16"
+                          Margin="10"
+                          Padding="5"
+                          Style="{StaticResource MaterialDesignOutlinedTextBox}">
+      <templates:TimePicker.Text>
+        <Binding Path="ProccessedWorkload" UpdateSourceTrigger="PropertyChanged">
+          <!--<Binding.ValidationRules>
+            <rules1:InvalidTimeSpanFormatValidationRule ValidatesOnTargetUpdated="True"/>
+          </Binding.ValidationRules>-->
+        </Binding>
+      </templates:TimePicker.Text>
+      <templates:TimePicker.InputBindings>
+        <KeyBinding Command="{Binding Path=ConfirmCommand}" Key="Enter"/>
+      </templates:TimePicker.InputBindings>
+    </templates:TimePicker>
+
     <Button DockPanel.Dock="Bottom" Content="Ok" Command="{Binding ConfirmCommand}"/>
     <Label/>
   </DockPanel>

@@ -1,7 +1,8 @@
 ﻿using Prism.Commands;
-using System;
-using System.Windows.Input;
 using Prism.Services.Dialogs;
+using System.Windows.Input;
+using UI.Infrastructure;
+using UI.Validation.Rules;
 
 namespace UI.ViewModels;
 
@@ -10,9 +11,10 @@ internal class AddWorkloadManuallyViewModel : DialogViewModelBase
     public AddWorkloadManuallyViewModel()
     {
         Title = "Добавить трудозатраты";
+        AddValidator(() => ProccessedWorkload, new IncorrectTimeSpanFormatValidationRule());
     }
 
-    public TimeSpan ProccessedWorkload { get; set; }
+    public string ProccessedWorkload { get; set; } = "00:00";
 
     #region Command Confirm - Команда Ок
 
@@ -20,11 +22,12 @@ internal class AddWorkloadManuallyViewModel : DialogViewModelBase
 
     /// <summary>Команда - Ок</summary>
     public ICommand ConfirmCommand => _ConfirmCommand
-        ??= new DelegateCommand(OnConfirmCommandExecuted);
+        ??= new DelegateCommand(OnConfirmCommandExecuted).ObservesCanExecute(() => ValidationSuccess);
 
     private void OnConfirmCommandExecuted()
     {
-        RaiseRequestClose(new DialogResult(ButtonResult.OK, new DialogParameters() { { "workload", ProccessedWorkload } }));
+        DateTimeUtils.TryParse(ProccessedWorkload, out var workload);
+        RaiseRequestClose(new DialogResult(ButtonResult.OK, new DialogParameters() { { "workload", workload } }));
     }
 
     #endregion

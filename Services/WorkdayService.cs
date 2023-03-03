@@ -17,7 +17,9 @@ public class WorkdayService
 
     public async Task<Workday?> GetByDate(DateOnly workdayDate)
     {
-        return await GetWorkdayQueryable(workdayDate).FirstOrDefaultAsync();
+        return await GetWorkdayQueryable(workdayDate)
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
     }
 
     public async Task<Work> AddWork(DateOnly workdayDate, string name)

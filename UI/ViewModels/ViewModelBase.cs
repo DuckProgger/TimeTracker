@@ -1,17 +1,21 @@
-﻿using System;
+﻿using Prism.Events;
+using Prism.Regions;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using System.Windows.Controls;
 using System.Windows.Data;
-using Prism.Events;
-using Prism.Regions;
 using UI.Infrastructure;
+using UI.Validation;
 
 namespace UI.ViewModels;
 
 internal abstract class ViewModelBase : INotifyPropertyChanged, INavigationAware
 {
     protected readonly IEventAggregator eventAggregator;
+    private Validator? validator;
 
     protected ViewModelBase() { }
 
@@ -23,11 +27,36 @@ internal abstract class ViewModelBase : INotifyPropertyChanged, INavigationAware
 
     public string Title { get; set; } = string.Empty;
 
+    public bool ValidationSuccess => Validate();
 
     public event PropertyChangedEventHandler PropertyChanged;
 
+    /// <summary>
+    /// Добавить валидацию для свойства.
+    /// </summary>
+    /// <param name="nameExpression">Выражение, указывающее на свойство.</param>
+    /// <param name="validationRule">Добавляемое правило проверки.</param>
+    protected void AddValidator(
+        Expression<Func<object>> nameExpression,
+        ValidationRule validationRule)
+    {
+        validator ??= new Validator();
+        validator.Add(nameExpression, validationRule);
+    }
+
+    /// <summary>
+    /// Произвести все валидации.
+    /// </summary>
+    /// <returns>true, если проверка прошла успешно; иначе false.</returns>
+    protected bool Validate()
+    {
+        return validator?.ValidateAll() ?? true;
+    }
+
     public void OnPropertyChanged([CallerMemberName] string prop = "") {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        if(validator?.HasPropertyName(prop) ?? false)
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ValidationSuccess)));
     }
 
     public virtual void OnNavigatedTo(NavigationContext navigationContext) { }

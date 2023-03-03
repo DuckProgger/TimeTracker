@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Database\Databa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entity", "Entity\Entity.csproj", "{83B3CB98-4DB3-40A1-9E72-62A80C0AE536}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{8E536BEC-68EE-48DE-BFC3-8C329BE3118E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{8E536BEC-68EE-48DE-BFC3-8C329BE3118E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Tests", "UI.Tests\UI.Tests.csproj", "{95D34648-15FB-4DF6-ADE8-BD903DC3AF49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{8E536BEC-68EE-48DE-BFC3-8C329BE3118E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E536BEC-68EE-48DE-BFC3-8C329BE3118E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E536BEC-68EE-48DE-BFC3-8C329BE3118E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95D34648-15FB-4DF6-ADE8-BD903DC3AF49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95D34648-15FB-4DF6-ADE8-BD903DC3AF49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95D34648-15FB-4DF6-ADE8-BD903DC3AF49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95D34648-15FB-4DF6-ADE8-BD903DC3AF49}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
