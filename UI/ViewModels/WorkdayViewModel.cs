@@ -17,7 +17,7 @@ namespace UI.ViewModels;
 internal class WorkdayViewModel : ViewModelBase<WorkModel>
 {
     private readonly IDialogService dialogService;
-    private Timer? collectionRefresher;
+    private Timer? activeWorkRefresher;
     private DateOnly selectedDate;
 
     public WorkdayViewModel(IDialogService dialogService)
@@ -47,22 +47,26 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
     {
         var workday = await WorkdayServiceInstance.GetByDate(SelectedDate);
         CurrentWorkday = workday != null ? WorkdayModel.Map(workday) : new WorkdayModel();
-        var activeWorkExist = CurrentWorkday.Works.Any(w => w.IsActive);
-        if (activeWorkExist)
-            StartCollectionRefreshTimer();
+        var activeWork = CurrentWorkday?.Works.FirstOrDefault(w => w.IsActive);
+        if (activeWork != null)
+            StartActiveWorkRefreshTimer(activeWork);
         else
-            StopCollectionRefreshTimer();
+            StopActiveWorkRefreshTimer();
     }
 
-    private void StartCollectionRefreshTimer()
+    private void StartActiveWorkRefreshTimer(WorkModel activeWork)
     {
-        collectionRefresher ??= new(_ => RefreshWorkCollection(), null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
+        activeWorkRefresher ??= new Timer(_ =>
+            activeWork.OnPropertyChanged(nameof(activeWork.TimeElapsed)), 
+            null, 
+            TimeSpan.Zero, 
+            TimeSpan.FromSeconds(1));
     }
 
-    private void StopCollectionRefreshTimer()
+    private void StopActiveWorkRefreshTimer()
     {
-        collectionRefresher?.Dispose();
-        collectionRefresher = null;
+        activeWorkRefresher?.Dispose();
+        activeWorkRefresher = null;
     }
 
     #region Command InitData - Команда Команда инициализировать данные на форме
