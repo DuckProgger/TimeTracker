@@ -8,6 +8,7 @@
              xmlns:viewModels="clr-namespace:UI.ViewModels"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:converters="clr-namespace:UI.Converters"
+             xmlns:templates="clr-namespace:UI.Templates"
              mc:Ignorable="d" 
              Height="150" Width="400"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -27,14 +28,14 @@
              Padding="5"
              Margin="10"
              FontSize="16"/>
-    <TextBox DockPanel.Dock="Top"
-             Text="{Binding ProccessedWork.Workload, Converter={StaticResource TimeConverter}}"
-             materialDesign:HintAssist.Hint="Трудозатраты"
-             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-             Padding="5"
-             Margin="10"
-             FontSize="16"/>
-    <Button DockPanel.Dock="Bottom" Content="Ok" Command="{Binding ConfirmCommand}"/>
+    <templates:TimePicker DockPanel.Dock="Top"
+                          Text="{Binding ProccessedWorkload, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                          materialDesign:HintAssist.Hint="Трудозатраты"
+                          FontSize="16"
+                          Margin="10"
+                          Padding="5"
+                          Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+      <Button DockPanel.Dock="Bottom" Content="Ok" Command="{Binding ConfirmCommand}"/>
     <Label/>
   </DockPanel>
 </UserControl>

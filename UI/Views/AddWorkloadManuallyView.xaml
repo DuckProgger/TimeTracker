@@ -16,20 +16,13 @@
     <Style BasedOn="{StaticResource DialogStyle}" TargetType="Window"/>
   </mvvm:Dialog.WindowStyle>
   <DockPanel>
-    <templates:TimePicker x:Name="Workload"
-                          DockPanel.Dock="Top"
+    <templates:TimePicker DockPanel.Dock="Top"
+                          Text="{Binding ProccessedWorkload, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                           materialDesign:HintAssist.Hint="Трудозатраты"
                           FontSize="16"
                           Margin="10"
                           Padding="5"
                           Style="{StaticResource MaterialDesignOutlinedTextBox}">
-      <templates:TimePicker.Text>
-        <Binding Path="ProccessedWorkload" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True">
-          <!--<Binding.ValidationRules>
-            <rules1:InvalidTimeSpanFormatValidationRule ValidatesOnTargetUpdated="True"/>
-          </Binding.ValidationRules>-->
-        </Binding>
-      </templates:TimePicker.Text>
       <templates:TimePicker.InputBindings>
         <KeyBinding Command="{Binding Path=ConfirmCommand}" Key="Enter"/>
       </templates:TimePicker.InputBindings>

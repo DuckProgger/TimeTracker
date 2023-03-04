@@ -11,7 +11,7 @@ internal class TimeConverter : IValueConverter
     {
         var timeString = value.ToString();
         var time = TimeSpan.Parse(timeString);
-        return $"{DateTimeUtils.ToStringWithZero(time.Hours)}:{DateTimeUtils.ToStringWithZero(time.Minutes)}";
+        return DateTimeUtils.ToShortTimeString(time);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

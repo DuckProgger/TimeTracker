@@ -5,7 +5,7 @@ namespace UI.Infrastructure;
 
 internal class DateTimeUtils
 {
-    private static readonly Regex timeRegex = 
+    private static readonly Regex timeRegex =
         new(@"^(?:(?'hours'[01]?\d|2[0-3]):(?'minutes'[0-5]?\d)|(?:(?'hours'[2][0-3])(?'minutes'[0-5]\d)|(?'hours'[01]?\d?)(?'minutes'[0-5]\d)|(?'minutes'\d)))$", RegexOptions.Compiled);
 
     public static DateOnly Today()
@@ -20,6 +20,9 @@ internal class DateTimeUtils
             ? $"0{value}"
             : value.ToString();
     }
+
+    public static string ToShortTimeString(TimeSpan time) =>
+     $"{ToStringWithZero(time.Hours)}:{ToStringWithZero(time.Minutes)}";
 
     /// <summary>
     /// Попытаться преобразовать строку, содержащую время в <see cref="TimeSpan"/>.
