@@ -184,10 +184,12 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
         const string workParameterName = "work";
         var parameters = new DialogParameters { { workParameterName, SelectedWork } };
         var dialogResult = await dialogService.ShowDialogAsync<WorkView>(parameters);
-        if (dialogResult.Result != ButtonResult.OK) return;
+        if (dialogResult.Result == ButtonResult.OK)
+        {
+            dialogResult.Parameters.TryGetValue<WorkModel>(workParameterName, out var work);
+            await WorkdayServiceInstance.EditWork(work.Id, work.Name, work.Workload);
+        }
 
-        dialogResult.Parameters.TryGetValue<WorkModel>(workParameterName, out var work);
-        await WorkdayServiceInstance.EditWork(work.Id, work.Name, work.Workload);
         await RefreshWorkCollection();
     }
 
