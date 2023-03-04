@@ -12,7 +12,7 @@ using UI.Validation;
 
 namespace UI.ViewModels;
 
-internal abstract class ViewModelBase : INotifyPropertyChanged, INavigationAware
+internal abstract class ViewModelBase : INotifyPropertyChanged, INavigationAware, IDataErrorInfo
 {
     protected readonly IEventAggregator eventAggregator;
     private Validator? validator;
@@ -66,6 +66,10 @@ internal abstract class ViewModelBase : INotifyPropertyChanged, INavigationAware
     }
 
     public virtual void OnNavigatedFrom(NavigationContext navigationContext) { }
+
+    public string Error { get; }
+
+    public string this[string columnName] => validator?.Validate(columnName) ?? string.Empty;
 }
 
 internal class ViewModelBase<T> : ViewModelBase
@@ -73,6 +77,7 @@ internal class ViewModelBase<T> : ViewModelBase
     protected ViewModelBase(IEventAggregator eventAggregator) : base(eventAggregator) {
         collectionView = (CollectionView)CollectionViewSource.GetDefaultView(Collection);
     }
+
     public ObservableCollection<T> Collection { get; set; } = new();
 
     private readonly ICollectionView collectionView;

@@ -24,7 +24,7 @@
                           Padding="5"
                           Style="{StaticResource MaterialDesignOutlinedTextBox}">
       <templates:TimePicker.Text>
-        <Binding Path="ProccessedWorkload" UpdateSourceTrigger="PropertyChanged">
+        <Binding Path="ProccessedWorkload" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True">
           <!--<Binding.ValidationRules>
             <rules1:InvalidTimeSpanFormatValidationRule ValidatesOnTargetUpdated="True"/>
           </Binding.ValidationRules>-->
