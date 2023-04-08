@@ -91,7 +91,7 @@ internal class ScreenshotsViewModel : ViewModelBase<ScreenshotModel>
     {
         var screenshotBunch = await ScreenshotServiceInstance.GetScreenshotBunchByDay(date, skip, take);
         var screenshotBunchList = screenshotBunch.ToList();
-        var screenshotBunchCount = screenshotBunchList.Count();
+        var screenshotBunchCount = screenshotBunchList.Count;
         var screenshotDataIndex = skip;
         for (var screenshotBunchIndex = 0;
              screenshotBunchIndex < screenshotBunchCount;

@@ -14,9 +14,6 @@
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              d:DataContext="{d:DesignInstance viewModels:WorkViewModel}"
              Background="{StaticResource MaterialDesignDarkBackground}">
-  <UserControl.Resources>
-    <converters:TimeConverter x:Key="TimeConverter"/>
-  </UserControl.Resources>
   <prism:Dialog.WindowStyle>
     <Style BasedOn="{StaticResource DialogStyle}" TargetType="Window"/>
   </prism:Dialog.WindowStyle>

@@ -5,14 +5,15 @@ using UI.Infrastructure;
 
 namespace UI.Converters;
 
-internal class TimeConverter : IValueConverter
+internal class DateTimeToTimeConverter : IValueConverter
 {
     public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        var timeString = value.ToString();
-        return TimeSpan.TryParse(timeString, out var time) 
-            ? DateTimeUtils.ToShortTimeString(time) 
-            : string.Empty;
+        var dateTimeString = value.ToString();
+        if (!DateTime.TryParse(dateTimeString, out var dateTime))
+            return string.Empty;
+        var time = dateTime.TimeOfDay;
+        return DateTimeUtils.ToShortTimeString(time);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

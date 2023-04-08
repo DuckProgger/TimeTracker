@@ -15,7 +15,7 @@
              Background="{StaticResource MaterialDesignDarkBackground}">
   <UserControl.Resources>
     <converters:DateConverter x:Key="DateConverter"/>
-    <converters:TimeConverter x:Key="TimeConverter"/>
+    <converters:DateTimeToTimeConverter x:Key="DateTimeToTimeConverter"/>
   </UserControl.Resources>
 
   <b:Interaction.Triggers>
@@ -49,7 +49,7 @@
             <DataTemplate>
               <StackPanel Orientation="Horizontal">
                 <Image Source="{Binding Screenshot}" Width="150" Height="100" Style="{StaticResource ImageHighResStyle}"/>
-                <TextBlock Text="{Binding Created, Converter={StaticResource TimeConverter}}" Margin="35"/>
+                <TextBlock Text="{Binding Created, Converter={StaticResource DateTimeToTimeConverter}}" Margin="35"/>
               </StackPanel>
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
