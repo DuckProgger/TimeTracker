@@ -48,10 +48,9 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
         var workday = await WorkdayServiceInstance.GetByDate(SelectedDate);
         CurrentWorkday = workday != null ? WorkdayModel.Map(workday) : new WorkdayModel();
         var activeWork = CurrentWorkday?.Works.FirstOrDefault(w => w.IsActive);
+        StopActiveWorkRefreshTimer();
         if (activeWork != null)
             StartActiveWorkRefreshTimer(activeWork);
-        else
-            StopActiveWorkRefreshTimer();
     }
 
     private void StartActiveWorkRefreshTimer(WorkModel activeWork)
