@@ -41,6 +41,8 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
 
     public WorkModel? SelectedWork { get; set; }
 
+    public bool ChangeFormat { get; set; }
+
     private static WorkdayService WorkdayServiceInstance => ServiceLocator.GetService<WorkdayService>();
 
     private async Task RefreshWorkCollection()
@@ -211,6 +213,21 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
         await WorkdayServiceInstance.RemoveWork(SelectedWork.Id);
         MDDialogHost.CloseDialogCommand.Execute(null, null);
         await RefreshWorkCollection();
+    }
+
+    #endregion
+
+    #region Command ChangeFormat - Команда сменить формат отображения времени
+
+    private ICommand? _ChangeFormatCommand;
+
+    /// <summary>Команда - сменить формат отображения времени</summary>
+    public ICommand ChangeFormatCommand => _ChangeFormatCommand
+        ??= new DelegateCommand(OnChangeFormatCommandExecuted);
+
+    private void OnChangeFormatCommandExecuted()
+    {
+        ChangeFormat = !ChangeFormat;
     }
 
     #endregion

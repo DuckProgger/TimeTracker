@@ -17,6 +17,7 @@
     <c:DateConverter x:Key="DateConverter"/>
     <c:ShortTimeConverter x:Key="ShortTimeConverter"/>
     <c:FullTimeConverter x:Key="FullTimeConverter"/>
+    <c:FractionTimeConverter x:Key="FractionTimeConverter"/>
   </UserControl.Resources>
   <i:Interaction.Triggers>
     <i:EventTrigger EventName="Loaded">
@@ -88,7 +89,28 @@
         </DataGrid.InputBindings>
         <DataGrid.Columns>
           <DataGridTextColumn Header="Название" Binding="{Binding Name}" IsReadOnly="True" />
-          <DataGridTextColumn Header="Трудозатраты" Binding="{Binding Workload, Converter={StaticResource ShortTimeConverter}}" IsReadOnly="True"/>
+          <DataGridTemplateColumn Width="*" Header="Трудозатраты" IsReadOnly="True">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <Grid>
+
+                  <!--Трудозатраты в формате времени-->
+                  <TextBlock Text="{Binding Workload, Converter={StaticResource ShortTimeConverter}}" 
+                             Visibility="{Binding DataContext.ChangeFormat, 
+                    Converter={StaticResource InverseBooleanToVisibilityConverter},
+                    RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}}"/>
+
+                  <!--Трудозатраты в формате дроби-->
+                  <TextBlock Text="{Binding Workload, Converter={StaticResource FractionTimeConverter}}" 
+                             Visibility="{Binding DataContext.ChangeFormat, 
+                    Converter={StaticResource BooleanToVisibilityConverter},
+                    RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:WorkdayView}}}"/>
+
+                </Grid>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+
+          </DataGridTemplateColumn>
           <DataGridTemplateColumn Width="*">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
@@ -132,10 +154,28 @@
       </DataGrid>
 
       <!--Всего трудозатрат-->
-      <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 0, 10, 0">
-        <TextBlock Text="Всего: "/>
-        <TextBlock Text="{Binding CurrentWorkday.TotalWorkload, Converter={StaticResource ShortTimeConverter}}"/>
-      </StackPanel>
+      <DockPanel Grid.Row="3">
+
+        <!--Кнопка смены форматирования времени-->
+        <Button DockPanel.Dock="Left"
+                Content="{materialDesign:PackIcon Kind=FormatText}"
+                Command="{Binding ChangeFormatCommand}"
+                Style="{StaticResource MaterialDesignFlatDarkButton}"
+                FontSize="12" 
+                VerticalAlignment="Center" 
+                Padding="0"
+                Margin="10, 0, 0, 0"
+                Height="15"/>
+
+        <!--Отображение общих трудозатрат за день-->
+        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal"  Margin="0, 0, 10, 0">
+          <TextBlock Text="Всего: "/>
+          <TextBlock Text="{Binding CurrentWorkday.TotalWorkload, Converter={StaticResource ShortTimeConverter}}"/>
+        </StackPanel>
+
+        <Label/>
+      </DockPanel>
+
 
       <!--Уведомления-->
       <ListBox Grid.Row="4" DockPanel.Dock="Bottom" Template="{StaticResource NotifierTemplate}"/>
