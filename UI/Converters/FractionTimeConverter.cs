@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using Microsoft.VisualBasic.CompilerServices;
 using UI.Infrastructure;
 
 namespace UI.Converters;
