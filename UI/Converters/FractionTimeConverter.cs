@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using Microsoft.VisualBasic.CompilerServices;
+using UI.Infrastructure;
 
 namespace UI.Converters;
 
@@ -11,7 +13,7 @@ internal class FractionTimeConverter : IValueConverter
         var time = (TimeSpan)value;
         var hoursPart = time.Hours;
         // Преобразовать минуты в сотые доли часа (45 мин -> 75 (0.75 часа))
-        var minutesPart = (int)double.Round(time.Minutes * 1.66);
+        var minutesPart = DateTimeUtils.ToStringWithZero((int)double.Round(time.Minutes * 1.66));
         return $"{hoursPart}.{minutesPart} ч";
     }
 
