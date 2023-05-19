@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Entity;
 
-namespace UI.Model;
-
-internal class Settings : ModelBase
+public class Settings
 {
     public int ScreenshotsLifetimeFromDays { get; set; } = 7;
 
@@ -18,6 +15,18 @@ internal class Settings : ModelBase
         DayOfWeek.Friday
     };
 
+    /// <summary>
+    /// Время начала рабочего дня
+    /// </summary>
     public TimeSpan WorkTimeBegin { get; set; } = TimeSpan.Parse("9:00");
+
+    /// <summary>
+    /// Время окончания рабочего дня
+    /// </summary>
     public TimeSpan WorkTimeEnd { get; set; } = TimeSpan.Parse("18:00");
+
+    /// <summary>
+    /// Продожительность обеда
+    /// </summary>
+    public TimeSpan LunchDuration { get; set; } = TimeSpan.Parse("1:00");
 }

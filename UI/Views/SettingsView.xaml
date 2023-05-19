@@ -31,11 +31,11 @@
     </Grid.RowDefinitions>
     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
       <TextBlock Text="Время хранения скриншотов, дней "/>
-      <TextBox Text="{Binding Settings.ScreenshotsLifetimeFromDays}" Style="{StaticResource MaterialDesignOutlinedTextBox}" Padding="0" Width="50"/>
+      <TextBox Text="{Binding SettingsModel.ScreenshotsLifetimeFromDays}" Style="{StaticResource MaterialDesignOutlinedTextBox}" Padding="0" Width="50"/>
     </StackPanel>
     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
       <TextBlock Text="Периодичность сохранения скриншотов, мин "/>
-      <TextBox Text="{Binding Settings.ScreenshotCreationPeriodFromMinutes}" Style="{StaticResource MaterialDesignOutlinedTextBox}" Padding="0" Width="50"/>
+      <TextBox Text="{Binding SettingsModel.ScreenshotCreationPeriodFromMinutes}" Style="{StaticResource MaterialDesignOutlinedTextBox}" Padding="0" Width="50"/>
     </StackPanel>
 
     <Grid Grid.Row="2">
@@ -59,12 +59,17 @@
         <StackPanel>
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="Начало рабочего дня: "/>
-            <TextBox Text="{Binding Settings.WorkTimeBegin, Converter={StaticResource TimeConverter}}"
+            <TextBox Text="{Binding SettingsModel.WorkTimeBegin, Converter={StaticResource TimeConverter}}"
                      Style="{StaticResource MaterialDesignOutlinedTextBox}" Padding="0" Width="50"/>
           </StackPanel>
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="Конец рабочего дня: "/>
-            <TextBox Text="{Binding Settings.WorkTimeEnd, Converter={StaticResource TimeConverter}}"
+            <TextBox Text="{Binding SettingsModel.WorkTimeEnd, Converter={StaticResource TimeConverter}}"
+                     Style="{StaticResource MaterialDesignOutlinedTextBox}" Padding="0" Width="50"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Продолжительность обеда: "/>
+            <TextBox Text="{Binding SettingsModel.LunchDuration, Converter={StaticResource TimeConverter}}"
                      Style="{StaticResource MaterialDesignOutlinedTextBox}" Padding="0" Width="50"/>
           </StackPanel>
         </StackPanel>

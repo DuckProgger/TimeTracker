@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using UI.Infrastructure;
 using UI.Model;
+using UI.Services;
 using UI.Views;
 using MDDialogHost = MaterialDesignThemes.Wpf.DialogHost;
 
@@ -43,12 +44,25 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
 
     public bool ChangeFormat { get; set; }
 
+    public TimeSpan UnaccountedTime { get; set; }
+
     private static WorkdayService WorkdayServiceInstance => ServiceLocator.GetService<WorkdayService>();
 
     private async Task RefreshWorkCollection()
     {
+        if (!WorkdayService.IsWorkDay(SelectedDate))
+            CurrentWorkday = new WorkdayModel();
         var workday = await WorkdayServiceInstance.GetByDate(SelectedDate);
-        CurrentWorkday = workday != null ? WorkdayModel.Map(workday) : new WorkdayModel();
+        if (workday == null)
+        {
+            var createdWorkday = await WorkdayServiceInstance.AddWorkDay(SelectedDate);
+            CurrentWorkday = WorkdayModel.Map(createdWorkday);
+        }
+        else
+            CurrentWorkday = WorkdayModel.Map(workday);
+
+        UnaccountedTime = await WorkdayServiceInstance.GetUnaccountedTime(SelectedDate);
+
         var activeWork = CurrentWorkday?.Works.FirstOrDefault(w => w.IsActive);
         StopActiveWorkRefreshTimer();
         if (activeWork != null)
@@ -58,9 +72,9 @@ internal class WorkdayViewModel : ViewModelBase<WorkModel>
     private void StartActiveWorkRefreshTimer(WorkModel activeWork)
     {
         activeWorkRefresher ??= new Timer(_ =>
-            activeWork.OnPropertyChanged(nameof(activeWork.TimeElapsed)), 
-            null, 
-            TimeSpan.Zero, 
+            activeWork.OnPropertyChanged(nameof(activeWork.TimeElapsed)),
+            null,
+            TimeSpan.Zero,
             TimeSpan.FromSeconds(1));
     }
 

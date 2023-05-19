@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using System;
 using System.Windows.Input;
+using Services;
 using UI.Model;
 using UI.Services;
 
@@ -8,89 +9,89 @@ namespace UI.ViewModels;
 
 internal class SettingsViewModel : ViewModelBase
 {
-    public Settings Settings { get; set; }
+    public SettingsModel SettingsModel { get; set; }
 
     public bool IsMondaySelected
     {
-        get => Settings?.WorkDays?.Contains(DayOfWeek.Monday) ?? false;
+        get => SettingsModel?.WorkDays?.Contains(DayOfWeek.Monday) ?? false;
         set
         {
             if (value)
-                Settings.WorkDays.Add(DayOfWeek.Monday);
+                SettingsModel.WorkDays.Add(DayOfWeek.Monday);
             else
-                Settings.WorkDays.Remove(DayOfWeek.Monday);
+                SettingsModel.WorkDays.Remove(DayOfWeek.Monday);
         }
     }
 
     public bool IsTuesdaySelected
     {
-        get => Settings?.WorkDays?.Contains(DayOfWeek.Tuesday) ?? false;
+        get => SettingsModel?.WorkDays?.Contains(DayOfWeek.Tuesday) ?? false;
         set
         {
             if (value)
-                Settings.WorkDays.Add(DayOfWeek.Tuesday);
+                SettingsModel.WorkDays.Add(DayOfWeek.Tuesday);
             else
-                Settings.WorkDays.Remove(DayOfWeek.Tuesday);
+                SettingsModel.WorkDays.Remove(DayOfWeek.Tuesday);
         }
     }
 
     public bool IsWednesdaySelected
     {
-        get => Settings?.WorkDays?.Contains(DayOfWeek.Wednesday) ?? false;
+        get => SettingsModel?.WorkDays?.Contains(DayOfWeek.Wednesday) ?? false;
         set
         {
             if (value)
-                Settings.WorkDays.Add(DayOfWeek.Wednesday);
+                SettingsModel.WorkDays.Add(DayOfWeek.Wednesday);
             else
-                Settings.WorkDays.Remove(DayOfWeek.Wednesday);
+                SettingsModel.WorkDays.Remove(DayOfWeek.Wednesday);
         }
     }
 
     public bool IsThursdaySelected
     {
-        get => Settings?.WorkDays?.Contains(DayOfWeek.Thursday) ?? false;
+        get => SettingsModel?.WorkDays?.Contains(DayOfWeek.Thursday) ?? false;
         set
         {
             if (value)
-                Settings.WorkDays.Add(DayOfWeek.Thursday);
+                SettingsModel.WorkDays.Add(DayOfWeek.Thursday);
             else
-                Settings.WorkDays.Remove(DayOfWeek.Thursday);
+                SettingsModel.WorkDays.Remove(DayOfWeek.Thursday);
         }
     }
 
     public bool IsFridaySelected
     {
-        get => Settings?.WorkDays?.Contains(DayOfWeek.Friday) ?? false;
+        get => SettingsModel?.WorkDays?.Contains(DayOfWeek.Friday) ?? false;
         set
         {
             if (value)
-                Settings.WorkDays.Add(DayOfWeek.Friday);
+                SettingsModel.WorkDays.Add(DayOfWeek.Friday);
             else
-                Settings.WorkDays.Remove(DayOfWeek.Friday);
+                SettingsModel.WorkDays.Remove(DayOfWeek.Friday);
         }
     }
 
     public bool IsSaturdaySelected
     {
-        get => Settings?.WorkDays?.Contains(DayOfWeek.Saturday) ?? false;
+        get => SettingsModel?.WorkDays?.Contains(DayOfWeek.Saturday) ?? false;
         set
         {
             if (value)
-                Settings.WorkDays.Add(DayOfWeek.Saturday);
+                SettingsModel.WorkDays.Add(DayOfWeek.Saturday);
             else
-                Settings.WorkDays.Remove(DayOfWeek.Saturday);
+                SettingsModel.WorkDays.Remove(DayOfWeek.Saturday);
         }
     }
 
     public bool IsSundaySelected
     {
-        get => Settings?.WorkDays?.Contains(DayOfWeek.Sunday) ?? false;
+        get => SettingsModel?.WorkDays?.Contains(DayOfWeek.Sunday) ?? false;
         set
         {
             if (value)
-                Settings.WorkDays.Add(DayOfWeek.Sunday);
+                SettingsModel.WorkDays.Add(DayOfWeek.Sunday);
             else
-                Settings.WorkDays.Remove(DayOfWeek.Sunday);
+                SettingsModel.WorkDays.Remove(DayOfWeek.Sunday);
         }
     }
 
@@ -104,7 +105,8 @@ internal class SettingsViewModel : ViewModelBase
 
     private void OnInitDataCommandExecuted()
     {
-        Settings = SettingsService.Read();
+        var settings = SettingsService.Read();
+        SettingsModel = SettingsModel.Map(settings);
     }
 
     #endregion
@@ -119,7 +121,8 @@ internal class SettingsViewModel : ViewModelBase
 
     private void OnSaveCommandExecuted()
     {
-        SettingsService.Save(Settings);
+        var settings = SettingsModel.MapReverse(SettingsModel);
+        SettingsService.Save(settings);
     }
 
     #endregion

@@ -4,9 +4,7 @@ using Prism.Ioc;
 using Prism.Modularity;
 using Services;
 using System;
-using System.ComponentModel;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.Windows;
 using UI.DependencyInjection;
 using UI.Infrastructure;
@@ -50,7 +48,8 @@ public partial class App
 
         var context = ServiceLocator.GetService<ApplicationContext>();
         context.Database.Migrate();
-        ClearOutdatedScreenshots();
+        var screenshotService = ServiceLocator.GetService<ScreenshotService>();
+        screenshotService.ClearOutdatedScreenshots().GetAwaiter().GetResult();
         RunSaveScreenshotBackgroundWorker();
     }
 
@@ -64,42 +63,11 @@ public partial class App
         var worker = new RepeatableBackgroundWorker(TimeSpan.FromMinutes(startWorkerOffset), TimeSpan.FromMinutes(screenshotCreationPeriod));
         worker.DoWork += async (s, e) =>
         {
-            if (!IsWorkTime(DateTime.Now)) return;
+            if (!WorkdayService.IsWorkTime(DateTime.Now)) return;
             var imageBytes = ScreenshotHelper.CreateScreenshot(ImageFormat.Png);
             var screenshotService = ServiceLocator.GetService<ScreenshotService>();
             await screenshotService.SaveScreenshot(imageBytes, DateTime.Now);
         };
         worker.RunWorkerAsync();
     }
-
-    private static async void ClearOutdatedScreenshots()
-    {
-        var settings = SettingsService.Read();
-        var screenshotsLifetimeFromDays = settings.ScreenshotsLifetimeFromDays;
-        var dateOfOutdatedScreenshots = DateTime.Now - TimeSpan.FromDays(screenshotsLifetimeFromDays);
-        var screenshotService = ServiceLocator.GetService<ScreenshotService>();
-        var screenshotDates = await screenshotService.GetAllScreenshotDates();
-        var outdatedScreenshotsDates = screenshotDates
-            .Where(s => s.Year <= dateOfOutdatedScreenshots.Year &&
-                        s.Month <= dateOfOutdatedScreenshots.Month &&
-                        s.Day <= dateOfOutdatedScreenshots.Day);
-        foreach (var outdatedScreenshotDate in outdatedScreenshotsDates)
-            await screenshotService.RemoveScreenshotsByDay(outdatedScreenshotDate);
-    }
-
-    private static bool IsWorkTime(DateTime dateTime)
-    {
-        var settings = SettingsService.Read();
-        var currentDayOfWeek = dateTime.DayOfWeek;
-        var isWorkDay = settings.WorkDays.Contains(currentDayOfWeek);
-        if(!isWorkDay) return false;
-
-        var currentTime = dateTime.TimeOfDay;
-        var isWorkTime = currentTime >= settings.WorkTimeBegin &&
-                         currentTime <= settings.WorkTimeEnd;
-        if(!isWorkTime) return false;
-
-        return true;
-    }
-
 }

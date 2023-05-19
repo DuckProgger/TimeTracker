@@ -176,6 +176,12 @@
           <TextBlock Text="Всего: "/>
           <TextBlock Text="{Binding CurrentWorkday.TotalWorkload, Converter={StaticResource ShortTimeConverter}}"/>
         </StackPanel>
+       
+        <!--Отображение неучтенных трудозатрат за день--><!--
+        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal"  Margin="0, 0, 10, 0">
+          <TextBlock Text="Неучтенные: "/>
+          <TextBlock Text="{Binding UnaccountedTime, Converter={StaticResource ShortTimeConverter}}"/>
+        </StackPanel>-->
 
         <Label/>
       </DockPanel>

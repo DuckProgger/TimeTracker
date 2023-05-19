@@ -49,6 +49,19 @@ public class ScreenshotService
             .ToListAsync();
     }
 
+    public async Task ClearOutdatedScreenshots()
+    {
+        var settings = SettingsService.Read();
+        var screenshotsLifetimeFromDays = settings.ScreenshotsLifetimeFromDays;
+        var dateOfOutdatedScreenshots = DateTime.Now - TimeSpan.FromDays(screenshotsLifetimeFromDays);
+        var screenshotDates = await GetAllScreenshotDates();
+        var outdatedScreenshotsDates = screenshotDates
+            .Where(s => s.Year <= dateOfOutdatedScreenshots.Year &&
+                        s.Month <= dateOfOutdatedScreenshots.Month &&
+                        s.Day <= dateOfOutdatedScreenshots.Day);
+        foreach (var outdatedScreenshotDate in outdatedScreenshotsDates)
+            await RemoveScreenshotsByDay(outdatedScreenshotDate);
+    }
 
     private IQueryable<Screenshot> GetScreenshotsByDayQuery(DateOnly date)
     {

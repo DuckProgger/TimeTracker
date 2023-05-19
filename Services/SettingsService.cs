@@ -1,12 +1,10 @@
-﻿using System.IO;
+﻿using Entity;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using UI.Model;
 
-namespace UI.Services;
+namespace Services;
 
-internal class SettingsService
+public class SettingsService
 {
     private const string settingsPath = "settings.json";
     private static readonly object readLock = new();
