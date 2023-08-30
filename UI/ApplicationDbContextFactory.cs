@@ -1,8 +1,8 @@
-﻿using Database;
+﻿using System;
+using Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 
 namespace UI;
 
@@ -22,7 +22,7 @@ public class ApplicationContextFactory : IDesignTimeDbContextFactory<Application
     internal static string GetConnectionString()
     {
         ConfigurationBuilder builder = new ConfigurationBuilder();
-        builder.SetBasePath(Directory.GetCurrentDirectory());
+        builder.SetBasePath(AppContext.BaseDirectory);
         builder.AddJsonFile("appsettings.json");
         IConfigurationRoot config = builder.Build();
         return config.GetConnectionString("DefaultConnection");
