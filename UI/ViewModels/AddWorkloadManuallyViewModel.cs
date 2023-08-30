@@ -31,4 +31,19 @@ internal class AddWorkloadManuallyViewModel : DialogViewModelBase
     }
 
     #endregion
+    
+    #region Command Close - Команда Закрыть окно
+
+    private ICommand? _CloseCommand;
+
+    /// <summary>Команда - Закрыть окно</summary>
+    public ICommand CloseCommand => _CloseCommand
+        ??= new DelegateCommand(OnCloseCommandExecuted);
+
+    private void OnCloseCommandExecuted()
+    {
+        RaiseRequestClose(new DialogResult(ButtonResult.Cancel));
+    }
+
+    #endregion
 }

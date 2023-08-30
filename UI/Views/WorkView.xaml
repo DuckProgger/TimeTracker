@@ -18,6 +18,10 @@
     <Style BasedOn="{StaticResource DialogStyle}" TargetType="Window"/>
   </prism:Dialog.WindowStyle>
   <DockPanel>
+    <DockPanel.InputBindings>
+      <KeyBinding Command="{Binding Path=ConfirmCommand}" Key="Enter"/>
+      <KeyBinding Command="{Binding Path=CloseCommand}" Key="Escape"/>
+    </DockPanel.InputBindings>
     <TextBox DockPanel.Dock="Top"
              Text="{Binding ProccessedWork.Name}"
              materialDesign:HintAssist.Hint="Название работы"
@@ -32,7 +36,7 @@
                           Margin="10"
                           Padding="5"
                           Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
-      <Button DockPanel.Dock="Bottom" Content="Ok" Command="{Binding ConfirmCommand}"/>
+    <Button DockPanel.Dock="Bottom" Content="Ok" Command="{Binding ConfirmCommand}"/>
     <Label/>
   </DockPanel>
 </UserControl>

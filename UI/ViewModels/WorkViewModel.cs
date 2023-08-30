@@ -39,6 +39,21 @@ internal class WorkViewModel : DialogViewModelBase
 
     #endregion
 
+    #region Command Close - Команда Закрыть окно
+
+    private ICommand? _CloseCommand;
+
+    /// <summary>Команда - Закрыть окно</summary>
+    public ICommand CloseCommand => _CloseCommand
+        ??= new DelegateCommand(OnCloseCommandExecuted);
+
+    private void OnCloseCommandExecuted()
+    {
+        RaiseRequestClose(new DialogResult(ButtonResult.Cancel));
+    }
+
+    #endregion
+
     public override void OnDialogOpened(IDialogParameters parameters)
     {
         parameters.TryGetValue<WorkModel>("work", out var work);

@@ -25,6 +25,7 @@
                           Style="{StaticResource MaterialDesignOutlinedTextBox}">
       <templates:TimePicker.InputBindings>
         <KeyBinding Command="{Binding Path=ConfirmCommand}" Key="Enter"/>
+        <KeyBinding Command="{Binding Path=CloseCommand}" Key="Escape"/>
       </templates:TimePicker.InputBindings>
     </templates:TimePicker>
 
